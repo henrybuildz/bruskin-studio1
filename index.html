@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bruskin Studio — Henry Bruskin, Web Designer in Vienna</title>
+  <meta name="description" content="Henry Bruskin — 14-year-old web designer in Vienna. I build websites for restaurants, small businesses, and local brands." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500;1,9..144,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Variables ──────────────────────────────────────────────── */
+    :root {
+      --cream:      #f5efe0;
+      --cream-soft: #faf8f3;
+      --cream-deep: #ede4ce;
+      --ink:        #1c2b1e;
+      --ink-mid:    #3a4a3c;
+      --ink-light:  #6b7a6d;
+      --amber:      #d4873a;
+      --amber-lt:   #e09a50;
+      --rose:       #c47a6b;
+      --rule:       rgba(28,43,30,0.1);
+      --shadow:     0 4px 24px rgba(28,43,30,0.08);
+      --shadow-lg:  0 16px 48px rgba(28,43,30,0.13);
+      --font-disp:  'Fraunces', Georgia, serif;
+      --font-body:  'Plus Jakarta Sans', sans-serif;
+      --ease:       cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    /* ── Reset ──────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: var(--font-body);
+      background: var(--cream);
+      color: var(--ink);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.65;
+    }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    button { cursor: pointer; font-family: inherit; border: none; outline: none; background: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ── Layout ─────────────────────────────────────────────────── */
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 2rem; }
+    .section-pad { padding: 7rem 0; }
+
+    /* ── Grain ──────────────────────────────────────────────────── */
+    .grain {
+      position: absolute; inset: 0; pointer-events: none; z-index: 1;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23g)' opacity='0.1'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      opacity: 0.5;
+      mix-blend-mode: multiply;
+    }
+
+    /* ── Reveal ─────────────────────────────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+    }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .reveal-l { opacity: 0; transform: translateX(-28px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
+    .reveal-r { opacity: 0; transform: translateX(28px);  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
+    .reveal-l.in, .reveal-r.in { opacity: 1; transform: translateX(0); }
+    .d1 { transition-delay: 0.08s; }
+    .d2 { transition-delay: 0.18s; }
+    .d3 { transition-delay: 0.28s; }
+    .d4 { transition-delay: 0.38s; }
+
+    /* ── Hero load ───────────────────────────────────────────────── */
+    @keyframes up {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .h1 { animation: up 0.9s var(--ease) 0.1s both; }
+    .h2 { animation: up 0.9s var(--ease) 0.28s both; }
+    .h3 { animation: up 0.9s var(--ease) 0.46s both; }
+    .h4 { animation: up 0.9s var(--ease) 0.64s both; }
+    .h5 { animation: up 0.9s var(--ease) 0.82s both; }
+
+    /* ── Section label ──────────────────────────────────────────── */
+    .label {
+      font-size: 0.67rem; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--amber); margin-bottom: 0.8rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .label::before { content: '✦'; font-size: 0.55rem; }
+
+    /* ══════════════════════════════════════════════════════════════
+       1. NAV
+    ══════════════════════════════════════════════════════════════ */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 1.4rem 0;
+      transition: background 0.45s ease, box-shadow 0.45s ease, padding 0.35s ease;
+    }
+    #navbar.scrolled {
+      background: rgba(245,239,224,0.96);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 1px 0 var(--rule);
+      padding: 0.9rem 0;
+    }
+    .nav-inner {
+      max-width: 1080px; margin: 0 auto; padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: var(--font-disp);
+      font-size: 1.2rem; font-weight: 400; font-style: italic;
+      color: var(--ink); letter-spacing: 0.01em;
+    }
+    .nav-links { display: flex; align-items: center; gap: 2rem; }
+    .nav-links a {
+      font-size: 0.78rem; font-weight: 500;
+      color: var(--ink-mid);
+      transition: color 0.25s ease;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-talk {
+      font-size: 0.75rem; font-weight: 600;
+      color: var(--cream-soft) !important;
+      background: var(--ink);
+      padding: 0.55rem 1.3rem;
+      border-radius: 100px;
+      transition: background 0.25s ease, transform 0.25s ease !important;
+    }
+    .nav-talk:hover { background: var(--ink-mid); transform: translateY(-1px); }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; padding: 4px; }
+    .hamburger span {
+      display: block; width: 22px; height: 1.5px;
+      background: var(--ink); border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    .mobile-nav {
+      display: none; position: fixed; inset: 0; z-index: 999;
+      background: var(--cream);
+      flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
+      opacity: 0; transition: opacity 0.3s ease;
+    }
+    .mobile-nav.open { display: flex; opacity: 1; }
+    .mobile-nav a {
+      font-family: var(--font-disp); font-size: 2.4rem;
+      font-weight: 400; font-style: italic; color: var(--ink);
+    }
+    .mobile-nav a:hover { color: var(--amber); }
+
+    /* ══════════════════════════════════════════════════════════════
+       2. HERO
+    ══════════════════════════════════════════════════════════════ */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+      background: linear-gradient(150deg, #f5efe0 0%, #ede4ce 55%, #e8dbbe 100%);
+    }
+    .hero-vignette {
+      position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: radial-gradient(ellipse 100% 90% at 60% 40%, transparent 40%, rgba(28,43,30,0.06) 100%);
+    }
+    /* Organic blob accent */
+    .hero-blob {
+      position: absolute; z-index: 1; pointer-events: none;
+      border-radius: 50%; filter: blur(80px); opacity: 0.25;
+    }
+    .hero-blob-1 {
+      width: 500px; height: 500px; right: -100px; top: -100px;
+      background: var(--amber);
+    }
+    .hero-blob-2 {
+      width: 340px; height: 340px; left: -60px; bottom: 60px;
+      background: var(--rose);
+    }
+    .hero-content {
+      position: relative; z-index: 3;
+      max-width: 780px; padding: 2rem 2rem 2rem calc((100vw - 1080px)/2 + 2rem);
+    }
+    @media (max-width: 1080px) { .hero-content { padding: 2rem; } }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.08em;
+      background: rgba(28,43,30,0.07);
+      border: 1px solid rgba(28,43,30,0.12);
+      color: var(--ink-mid);
+      padding: 0.4rem 0.9rem; border-radius: 100px;
+      margin-bottom: 2.2rem;
+    }
+    .hero-badge-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--amber);
+      animation: blink 2.4s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%,100% { opacity: 1; } 50% { opacity: 0.3; }
+    }
+    .hero-title {
+      font-family: var(--font-disp);
+      font-size: clamp(3rem, 7vw, 5.8rem);
+      font-weight: 400; line-height: 1.05;
+      color: var(--ink); letter-spacing: -0.02em;
+      margin-bottom: 1.6rem;
+    }
+    .hero-title em {
+      font-style: italic; color: var(--amber);
+    }
+    .hero-sub {
+      font-size: clamp(0.95rem, 1.8vw, 1.08rem);
+      color: var(--ink-mid); max-width: 500px;
+      line-height: 1.7; margin-bottom: 2.5rem;
+      font-weight: 400;
+    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-dark {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.8rem; font-weight: 600;
+      background: var(--ink); color: var(--cream-soft);
+      padding: 0.85rem 1.8rem; border-radius: 100px;
+      transition: background 0.25s ease, transform 0.25s ease;
+    }
+    .btn-dark:hover { background: var(--ink-mid); transform: translateY(-2px); }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.8rem; font-weight: 600;
+      background: transparent; color: var(--ink);
+      padding: 0.85rem 1.8rem; border-radius: 100px;
+      border: 1.5px solid rgba(28,43,30,0.2);
+      transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+    }
+    .btn-outline:hover { border-color: var(--ink); transform: translateY(-2px); }
+
+    /* ══════════════════════════════════════════════════════════════
+       3. WORK
+    ══════════════════════════════════════════════════════════════ */
+    #work { background: var(--cream-soft); }
+    .work-header { margin-bottom: 3.5rem; }
+    .work-title {
+      font-family: var(--font-disp);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400; color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+    .work-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;
+    }
+    .work-card {
+      background: var(--cream);
+      border: 1px solid rgba(28,43,30,0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+    }
+    .work-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+    .work-card-thumb {
+      height: 200px; position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .thumb-green  { background: linear-gradient(135deg, #1a3d2b 0%, #2e5e42 100%); }
+    .thumb-dark   { background: linear-gradient(135deg, #0f0d0b 0%, #1c1815 100%); }
+    .thumb-blue   { background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%); }
+    .thumb-earth  { background: linear-gradient(135deg, #3d2b1a 0%, #6b4226 100%); }
+    .thumb-label {
+      font-family: var(--font-disp);
+      font-style: italic; font-size: 1.8rem; font-weight: 400;
+      color: rgba(255,255,255,0.5); letter-spacing: 0.04em;
+      user-select: none;
+    }
+    .thumb-grain {
+      position: absolute; inset: 0; opacity: 0.4; mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)' opacity='0.15'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+    }
+    .work-card-body { padding: 1.8rem; flex: 1; display: flex; flex-direction: column; }
+    .work-card-tag {
+      font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--amber); margin-bottom: 0.6rem;
+    }
+    .work-card-name {
+      font-family: var(--font-disp);
+      font-size: 1.3rem; font-weight: 500;
+      color: var(--ink); margin-bottom: 0.65rem;
+      letter-spacing: -0.01em;
+    }
+    .work-card-desc {
+      font-size: 0.88rem; color: var(--ink-light);
+      line-height: 1.65; flex: 1; margin-bottom: 1.4rem;
+    }
+    .work-card-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.78rem; font-weight: 600;
+      color: var(--ink);
+      border-bottom: 1.5px solid rgba(28,43,30,0.18);
+      padding-bottom: 0.15rem;
+      transition: color 0.25s ease, border-color 0.25s ease;
+      align-self: flex-start;
+    }
+    .work-card-link:hover { color: var(--amber); border-color: var(--amber); }
+    .work-card-link svg { transition: transform 0.25s ease; }
+    .work-card-link:hover svg { transform: translate(2px, -2px); }
+
+    /* ══════════════════════════════════════════════════════════════
+       4. ABOUT
+    ══════════════════════════════════════════════════════════════ */
+    #about { background: var(--cream); position: relative; overflow: hidden; }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1.3fr;
+      gap: 6rem; align-items: center;
+    }
+    /* Decorative H monogram */
+    .mono-wrap {
+      display: flex; align-items: center; justify-content: center;
+    }
+    .mono-outer {
+      width: 240px; height: 280px; position: relative;
+    }
+    .mono-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(145deg, var(--cream-deep), var(--cream-soft));
+      border-radius: 120px 120px 80px 80px;
+      border: 1px solid rgba(212,135,58,0.2);
+    }
+    .mono-h {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .mono-h svg { width: 130px; height: 130px; }
+    .mono-ring {
+      position: absolute; inset: -12px;
+      border: 1px dashed rgba(212,135,58,0.25);
+      border-radius: 132px 132px 92px 92px;
+      animation: spin 32s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .mono-tag {
+      position: absolute; bottom: -14px; left: 50%; transform: translateX(-50%);
+      background: var(--amber); color: var(--cream-soft);
+      font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 0.35rem 1rem; border-radius: 100px; white-space: nowrap;
+    }
+
+    .about-text h2 {
+      font-family: var(--font-disp);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 400; color: var(--ink);
+      letter-spacing: -0.01em; margin-bottom: 1.4rem; line-height: 1.2;
+    }
+    .about-body {
+      font-size: 0.97rem; color: var(--ink-mid);
+      line-height: 1.8; font-weight: 400;
+    }
+    .about-body + .about-body { margin-top: 0.9rem; }
+    .about-pills {
+      display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 2rem;
+    }
+    .pill {
+      font-size: 0.72rem; font-weight: 600;
+      padding: 0.4rem 1rem; border-radius: 100px;
+      background: rgba(28,43,30,0.07);
+      color: var(--ink-mid);
+      border: 1px solid rgba(28,43,30,0.1);
+    }
+    .pill.amber { background: rgba(212,135,58,0.12); border-color: rgba(212,135,58,0.25); color: var(--amber); }
+
+    /* ══════════════════════════════════════════════════════════════
+       5. WHY WORK WITH ME
+    ══════════════════════════════════════════════════════════════ */
+    #why {
+      background: var(--ink);
+      position: relative; overflow: hidden;
+    }
+    .why-grain { opacity: 0.18; mix-blend-mode: soft-light; }
+    .why-inner { position: relative; z-index: 2; }
+    .why-header { margin-bottom: 3.5rem; }
+    .why-header .label { color: var(--amber); }
+    .why-title {
+      font-family: var(--font-disp);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400; color: var(--cream-soft);
+      letter-spacing: -0.01em;
+    }
+    .why-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    }
+    .why-card {
+      background: rgba(245,239,224,0.06);
+      border: 1px solid rgba(245,239,224,0.1);
+      border-radius: 16px; padding: 2.2rem 1.8rem;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+    .why-card:hover {
+      background: rgba(245,239,224,0.1);
+      border-color: rgba(212,135,58,0.3);
+    }
+    .why-card-icon {
+      font-size: 1.3rem; margin-bottom: 1.1rem; display: block;
+      color: var(--amber);
+    }
+    .why-card-title {
+      font-family: var(--font-disp);
+      font-size: 1.15rem; font-weight: 500;
+      color: var(--cream-soft); margin-bottom: 0.6rem;
+      letter-spacing: -0.01em;
+    }
+    .why-card-desc {
+      font-size: 0.88rem; color: rgba(245,239,224,0.55);
+      line-height: 1.7;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       6. CONTACT
+    ══════════════════════════════════════════════════════════════ */
+    #contact { background: var(--cream-soft); }
+    .contact-inner { max-width: 620px; margin: 0 auto; text-align: center; }
+    .contact-title {
+      font-family: var(--font-disp);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 400; font-style: italic;
+      color: var(--ink); letter-spacing: -0.01em; margin-bottom: 0.8rem;
+    }
+    .contact-sub {
+      font-size: 0.92rem; color: var(--ink-light);
+      margin-bottom: 3rem; line-height: 1.7;
+    }
+    .contact-form { text-align: left; }
+    .cf-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.1rem; }
+    .cf-group label {
+      font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--ink-light);
+    }
+    .cf-group input,
+    .cf-group textarea {
+      width: 100%;
+      background: var(--cream);
+      border: 1.5px solid rgba(28,43,30,0.12);
+      border-radius: 10px;
+      font-family: var(--font-body); font-size: 0.95rem;
+      color: var(--ink); padding: 0.8rem 1rem;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+      outline: none;
+    }
+    .cf-group input::placeholder,
+    .cf-group textarea::placeholder { color: var(--ink-light); }
+    .cf-group input:focus,
+    .cf-group textarea:focus {
+      border-color: var(--amber);
+      box-shadow: 0 0 0 3px rgba(212,135,58,0.12);
+    }
+    .cf-group textarea { min-height: 120px; resize: vertical; }
+    .cf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .btn-send {
+      width: 100%; margin-top: 0.5rem;
+      font-size: 0.82rem; font-weight: 600;
+      background: var(--ink); color: var(--cream-soft);
+      padding: 1rem; border-radius: 100px;
+      transition: background 0.25s ease, transform 0.25s ease;
+    }
+    .btn-send:hover { background: var(--ink-mid); transform: translateY(-1px); }
+    .form-success {
+      display: none; text-align: center; padding: 2rem;
+      background: rgba(28,43,30,0.05); border-radius: 16px;
+      border: 1.5px solid rgba(28,43,30,0.1);
+    }
+    .form-success p {
+      font-family: var(--font-disp); font-style: italic;
+      font-size: 1.15rem; color: var(--ink-mid);
+    }
+    .contact-details {
+      display: flex; justify-content: center; gap: 2.5rem;
+      margin-top: 2.5rem; padding-top: 2rem;
+      border-top: 1px solid var(--rule);
+      flex-wrap: wrap;
+    }
+    .cd-item {
+      display: flex; flex-direction: column; align-items: center; gap: 0.25rem;
+    }
+    .cd-label {
+      font-size: 0.6rem; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--ink-light);
+    }
+    .cd-value {
+      font-size: 0.9rem; font-weight: 500;
+      color: var(--ink);
+    }
+    .cd-value a { color: var(--ink); transition: color 0.25s ease; }
+    .cd-value a:hover { color: var(--amber); }
+
+    /* ══════════════════════════════════════════════════════════════
+       7. FOOTER
+    ══════════════════════════════════════════════════════════════ */
+    #footer {
+      background: var(--cream);
+      padding: 3rem 0;
+      border-top: 1px solid var(--rule);
+    }
+    .footer-inner {
+      max-width: 1080px; margin: 0 auto; padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-logo {
+      font-family: var(--font-disp);
+      font-size: 1.1rem; font-style: italic; font-weight: 400;
+      color: var(--ink);
+    }
+    .footer-copy { font-size: 0.75rem; color: var(--ink-light); }
+    .footer-email {
+      font-size: 0.78rem; color: var(--ink-light);
+      transition: color 0.25s ease;
+    }
+    .footer-email:hover { color: var(--amber); }
+
+    /* ══════════════════════════════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════════════════════════════ */
+    @media (max-width: 860px) {
+      .work-grid { grid-template-columns: 1fr; }
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .mono-wrap { display: none; }
+      .why-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .section-pad { padding: 5rem 0; }
+      .cf-row { grid-template-columns: 1fr; }
+      .footer-inner { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+    }
+    @media (max-width: 480px) {
+      .hero-title { font-size: 2.8rem; }
+      .hero-actions { flex-direction: column; align-items: flex-start; }
+      .contact-details { flex-direction: column; align-items: center; gap: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Mobile Nav -->
+<nav class="mobile-nav" id="mobileNav">
+  <a href="#work"    onclick="closeMobileNav()">Work</a>
+  <a href="#about"   onclick="closeMobileNav()">About</a>
+  <a href="#contact" onclick="closeMobileNav()">Contact</a>
+</nav>
+
+<!-- ══════════════════════════════════════════════
+     1. NAV
+══════════════════════════════════════════════ -->
+<header id="navbar" role="banner">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">Bruskin Studio</a>
+    <ul class="nav-links" role="list">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact" class="nav-talk">Let's Talk</a></li>
+    </ul>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+<!-- ══════════════════════════════════════════════
+     2. HERO
+══════════════════════════════════════════════ -->
+<section id="hero" aria-labelledby="hero-title">
+  <div class="grain"></div>
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-vignette"></div>
+  <div class="hero-content">
+    <div class="hero-badge h1">
+      <span class="hero-badge-dot"></span>
+      Based in Vienna ✦
+    </div>
+    <h1 class="hero-title h2" id="hero-title">
+      Websites that<br><em>mean something.</em>
+    </h1>
+    <p class="hero-sub h3">
+      I design and build websites for restaurants, businesses, and brands in Vienna. Let's make yours.
+    </p>
+    <div class="hero-actions h4">
+      <a href="#work" class="btn-dark">
+        See My Work
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <a href="#contact" class="btn-outline">Get in Touch</a>
+    </div>
+    <p style="margin-top:3rem; font-size:0.75rem; color:var(--ink-light); font-weight:500;" class="h5">
+      14 years old &nbsp;·&nbsp; Vienna, Austria &nbsp;·&nbsp; Available for projects
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     3. WORK
+══════════════════════════════════════════════ -->
+<section id="work" class="section-pad" aria-labelledby="work-title">
+  <div class="container">
+    <div class="work-header reveal">
+      <span class="label">Selected Work</span>
+      <h2 class="work-title" id="work-title">Things I've built.</h2>
+    </div>
+
+    <div class="work-grid">
+
+      <article class="work-card reveal d1">
+        <div class="work-card-thumb thumb-green">
+          <div class="thumb-grain"></div>
+          <span class="thumb-label">Green Door</span>
+        </div>
+        <div class="work-card-body">
+          <span class="work-card-tag">Restaurant Website</span>
+          <h3 class="work-card-name">Green Door Bistro</h3>
+          <p class="work-card-desc">A health-forward bistro hidden inside Hofburg Palace. I built their full brand identity and website from scratch — capturing the warmth of a hidden gem.</p>
+          <a href="https://henrybuildz.github.io/green-door-bistro/" target="_blank" rel="noopener noreferrer" class="work-card-link">
+            View Site
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <article class="work-card reveal d2">
+        <div class="work-card-thumb thumb-dark">
+          <div class="thumb-grain"></div>
+          <span class="thumb-label">ASPIC</span>
+        </div>
+        <div class="work-card-body">
+          <span class="work-card-tag">Restaurant Website</span>
+          <h3 class="work-card-name">ASPIC Vienna</h3>
+          <p class="work-card-desc">A moody, editorial site for one of Vienna's most creative sharing-plates restaurants. Dark, refined, and built to convert.</p>
+          <a href="https://henrybuildz.github.io/aspic-vienna/" target="_blank" rel="noopener noreferrer" class="work-card-link">
+            View Site
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <article class="work-card reveal d3">
+        <div class="work-card-thumb thumb-blue">
+          <div class="thumb-grain"></div>
+          <span class="thumb-label">Academic</span>
+        </div>
+        <div class="work-card-body">
+          <span class="work-card-tag">Business Website</span>
+          <h3 class="work-card-name">Henry's Academic Services</h3>
+          <p class="work-card-desc">A clean professional website for an academic services business — complete with service listings and a contact form built with EmailJS.</p>
+          <span class="work-card-link" style="opacity:0.4; cursor:default;">Coming Soon</span>
+        </div>
+      </article>
+
+      <article class="work-card reveal d4">
+        <div class="work-card-thumb thumb-earth">
+          <div class="thumb-grain"></div>
+          <span class="thumb-label">Tolkien</span>
+        </div>
+        <div class="work-card-body">
+          <span class="work-card-tag">Interactive Web App</span>
+          <h3 class="work-card-name">Tolkien Mythology Quiz</h3>
+          <p class="work-card-desc">A browser-based mythology quiz for Tolkien fans. Built for fun — but it shows what clean interactive JavaScript and a sharp UI can do.</p>
+          <a href="https://henrybuildz.github.io/tolkien-mythology-quiz/" target="_blank" rel="noopener noreferrer" class="work-card-link">
+            View Site
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+          </a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     4. ABOUT
+══════════════════════════════════════════════ -->
+<section id="about" class="section-pad" aria-labelledby="about-title">
+  <div class="grain" style="opacity:0.3; mix-blend-mode:multiply;"></div>
+  <div class="container" style="position:relative; z-index:2;">
+    <div class="about-grid">
+
+      <!-- Decorative monogram -->
+      <div class="mono-wrap reveal-l">
+        <div class="mono-outer">
+          <div class="mono-bg"></div>
+          <div class="mono-ring"></div>
+          <div class="mono-h">
+            <svg viewBox="0 0 130 130" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <!-- Decorative H letterform -->
+              <text x="50%" y="56%" dominant-baseline="middle" text-anchor="middle"
+                font-family="Georgia, serif" font-size="96" font-style="italic"
+                fill="#1c2b1e" opacity="0.12">H</text>
+              <!-- Refined drawn H -->
+              <line x1="30" y1="22" x2="30" y2="108" stroke="#1c2b1e" stroke-width="3.5" stroke-linecap="round"/>
+              <line x1="100" y1="22" x2="100" y2="108" stroke="#1c2b1e" stroke-width="3.5" stroke-linecap="round"/>
+              <line x1="30" y1="65" x2="100" y2="65" stroke="#d4873a" stroke-width="2.5" stroke-linecap="round"/>
+              <!-- Small decorative flourishes -->
+              <circle cx="30" cy="22" r="4" fill="#d4873a" opacity="0.6"/>
+              <circle cx="100" cy="22" r="4" fill="#d4873a" opacity="0.6"/>
+              <circle cx="30" cy="108" r="4" fill="#1c2b1e" opacity="0.3"/>
+              <circle cx="100" cy="108" r="4" fill="#1c2b1e" opacity="0.3"/>
+            </svg>
+          </div>
+          <span class="mono-tag">Vienna, Austria</span>
+        </div>
+      </div>
+
+      <!-- Text -->
+      <div class="reveal-r">
+        <span class="label">About</span>
+        <h2 id="about-title">Who's behind<br>the screen.</h2>
+        <p class="about-body">
+          I'm Henry — a 14-year-old web designer based in Vienna. I started building websites because I wanted to see ideas come to life on screen. Now I help local businesses get online with sites that actually reflect who they are.
+        </p>
+        <p class="about-body">
+          I work with restaurants, small businesses, and anyone who has something worth showing the world. Every site I build is handcrafted — no templates, no shortcuts. Being young means I'm faster, more curious, and hungrier than most.
+        </p>
+        <div class="about-pills">
+          <span class="pill">Vienna-based</span>
+          <span class="pill amber">Available for work</span>
+          <span class="pill">English &amp; German</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     5. WHY WORK WITH ME
+══════════════════════════════════════════════ -->
+<section id="why" class="section-pad" aria-labelledby="why-title">
+  <div class="grain why-grain"></div>
+  <div class="why-inner container">
+    <div class="why-header reveal">
+      <span class="label">The Offer</span>
+      <h2 class="why-title" id="why-title">What you get.</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal d1">
+        <span class="why-card-icon">✦</span>
+        <h3 class="why-card-title">Custom Design</h3>
+        <p class="why-card-desc">No templates. Every site is built specifically for your business and your audience — from scratch, every time.</p>
+      </div>
+      <div class="why-card reveal d2">
+        <span class="why-card-icon">⚡</span>
+        <h3 class="why-card-title">Fast Turnaround</h3>
+        <p class="why-card-desc">Most sites delivered within 1–2 weeks. No long agency timelines, no waiting around. Just fast, clean execution.</p>
+      </div>
+      <div class="why-card reveal d3">
+        <span class="why-card-icon">€</span>
+        <h3 class="why-card-title">Honest Pricing</h3>
+        <p class="why-card-desc">Transparent, fair pricing for small businesses. No hidden fees, no retainers unless you want one.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     6. CONTACT
+══════════════════════════════════════════════ -->
+<section id="contact" class="section-pad" aria-labelledby="contact-title">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="reveal">
+        <span class="label" style="justify-content:center;">Contact</span>
+        <h2 class="contact-title" id="contact-title">Let's build something.</h2>
+        <p class="contact-sub">Based in Vienna. Available for local and remote projects.</p>
+      </div>
+
+      <form class="contact-form reveal" id="contactForm" novalidate>
+        <div class="cf-row">
+          <div class="cf-group">
+            <label for="cName">Name</label>
+            <input type="text" id="cName" name="name" placeholder="Your name" autocomplete="name" required />
+          </div>
+          <div class="cf-group">
+            <label for="cEmail">Email</label>
+            <input type="email" id="cEmail" name="email" placeholder="your@email.com" autocomplete="email" required />
+          </div>
+        </div>
+        <div class="cf-group">
+          <label for="cMessage">Message</label>
+          <textarea id="cMessage" name="message" placeholder="Tell me about your project…" required></textarea>
+        </div>
+        <button type="submit" class="btn-send">Send Message →</button>
+      </form>
+
+      <div class="form-success" id="formSuccess">
+        <p>Thanks — I'll get back to you within a day. 🙂</p>
+      </div>
+
+      <div class="contact-details reveal">
+        <div class="cd-item">
+          <span class="cd-label">Email</span>
+          <span class="cd-value"><a href="mailto:henrybru10@gmail.com">henrybru10@gmail.com</a></span>
+        </div>
+        <div class="cd-item">
+          <span class="cd-label">Phone</span>
+          <span class="cd-value"><a href="tel:+436769081511">+43 676 908 1511</a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ══════════════════════════════════════════════
+     7. FOOTER
+══════════════════════════════════════════════ -->
+<footer id="footer" role="contentinfo">
+  <div class="footer-inner">
+    <span class="footer-logo">Bruskin Studio</span>
+    <span class="footer-copy">© 2025 Henry Bruskin. Vienna, Austria.</span>
+    <a href="mailto:henrybru10@gmail.com" class="footer-email">henrybru10@gmail.com</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* Navbar */
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+  }, { passive: true });
+
+  /* Hamburger */
+  const btn   = document.getElementById('hamburgerBtn');
+  const mnav  = document.getElementById('mobileNav');
+  btn.addEventListener('click', () => {
+    const open = mnav.classList.toggle('open');
+    btn.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  window.closeMobileNav = function () {
+    mnav.classList.remove('open');
+    btn.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  };
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobileNav(); });
+
+  /* Reveal */
+  const els = document.querySelectorAll('.reveal, .reveal-l, .reveal-r');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -32px 0px' });
+    els.forEach(el => io.observe(el));
+  } else {
+    els.forEach(el => el.classList.add('in'));
+  }
+
+  /* Form */
+  const form    = document.getElementById('contactForm');
+  const success = document.getElementById('formSuccess');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const required = [document.getElementById('cName'), document.getElementById('cEmail'), document.getElementById('cMessage')];
+    let ok = true;
+    required.forEach(f => {
+      if (!f.value.trim()) {
+        f.style.borderColor = 'var(--rose)';
+        f.addEventListener('input', () => { f.style.borderColor = ''; }, { once: true });
+        ok = false;
+      }
+    });
+    if (!ok) return;
+    const s = form.querySelector('.btn-send');
+    s.textContent = 'Sending…'; s.disabled = true;
+    setTimeout(() => { form.style.display = 'none'; success.style.display = 'block'; }, 700);
+  });
+
+})();
+</script>
+</body>
+</html>
