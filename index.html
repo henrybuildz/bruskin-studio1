@@ -7,6 +7,8 @@
   <meta name="description" content="Henry Bruskin — 14-year-old web designer in Vienna. I build websites for restaurants, small businesses, and local brands." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>emailjs.init('OqRKcXWXn-dQrX2gy');</script>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500;1,9..144,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     /* ── Variables ──────────────────────────────────────────────── */
@@ -887,7 +889,15 @@
     if (!ok) return;
     const s = form.querySelector('.btn-send');
     s.textContent = 'Sending…'; s.disabled = true;
-    setTimeout(() => { form.style.display = 'none'; success.style.display = 'block'; }, 700);
+    emailjs.sendForm('service_mmb31o6', 'template_bsxgjs9', form)
+      .then(() => {
+        form.style.display = 'none';
+        success.style.display = 'block';
+      })
+      .catch(() => {
+        s.textContent = 'Something went wrong — try emailing me directly.';
+        s.disabled = false;
+      });
   });
 
 })();
