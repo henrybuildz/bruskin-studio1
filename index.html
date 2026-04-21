@@ -4,9 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bruskin Studio — Henry Bruskin, Web Designer in Vienna</title>
-  <meta name="description" content="Henry Bruskin — 14-year-old web designer in Vienna. I build websites for restaurants, small businesses, and local brands." />
+  <meta name="description" content="Henry Bruskin — web designer in Vienna. I build websites for restaurants, small businesses, and local brands." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>emailjs.init('OqRKcXWXn-dQrX2gy');</script>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500;1,9..144,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -133,28 +134,89 @@
     }
     .nav-talk:hover { background: var(--ink-mid); transform: translateY(-1px); }
 
-    .hamburger { display: none; flex-direction: column; gap: 5px; padding: 4px; }
-    .hamburger span {
-      display: block; width: 22px; height: 1.5px;
-      background: var(--ink); border-radius: 2px;
-      transition: transform 0.3s ease, opacity 0.3s ease;
+    /* Kebab (3-dot) button — mobile only */
+    .kebab-btn {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      width: 44px; height: 44px;
+      padding: 0;
+      background: none; border: none;
     }
-    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+    .kebab-btn span {
+      display: block;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--ink);
+    }
 
-    .mobile-nav {
-      display: none; position: fixed; inset: 0; z-index: 999;
-      background: var(--cream);
-      flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
-      opacity: 0; transition: opacity 0.3s ease;
+    /* ── Drawer overlay ─────────────────────────────────────────── */
+    .drawer-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 1001;
+      background: rgba(0,0,0,0);
+      transition: background 0.3s ease;
     }
-    .mobile-nav.open { display: flex; opacity: 1; }
-    .mobile-nav a {
-      font-family: var(--font-disp); font-size: 2.4rem;
-      font-weight: 400; font-style: italic; color: var(--ink);
+    .drawer-overlay.open {
+      display: block;
+      background: rgba(0,0,0,0.4);
     }
-    .mobile-nav a:hover { color: var(--amber); }
+
+    /* ── Drawer panel ───────────────────────────────────────────── */
+    .drawer {
+      position: fixed; top: 0; right: 0; bottom: 0;
+      width: 78%; max-width: 320px;
+      z-index: 1002;
+      background: var(--cream-soft);
+      border-left: 1px solid var(--rule);
+      transform: translateX(100%);
+      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      display: flex; flex-direction: column;
+      padding: 1.8rem 2rem 2.5rem;
+    }
+    .drawer.open { transform: translateX(0); }
+
+    .drawer-close {
+      align-self: flex-end;
+      display: flex; align-items: center; justify-content: center;
+      width: 44px; height: 44px;
+      color: var(--ink-mid);
+      margin-bottom: 2rem;
+    }
+    .drawer-close:hover { color: var(--ink); }
+
+    .drawer-links {
+      display: flex; flex-direction: column; gap: 0.2rem;
+      flex: 1;
+    }
+    .drawer-links a {
+      font-family: var(--font-disp);
+      font-size: 1.5rem; font-weight: 400; font-style: italic;
+      color: var(--ink); padding: 0.6rem 0;
+      transition: color 0.2s ease;
+    }
+    .drawer-links a:hover { color: var(--amber); }
+
+    .drawer-divider {
+      border: none; border-top: 1px solid var(--rule);
+      margin: 1.8rem 0 1.4rem;
+    }
+
+    .drawer-contact {
+      display: flex; flex-direction: column; gap: 0.6rem;
+    }
+    .drawer-contact a {
+      font-size: 0.82rem; color: var(--ink-mid);
+      transition: color 0.2s ease;
+    }
+    .drawer-contact a:hover { color: var(--amber); }
+    .drawer-wa {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      margin-top: 0.2rem;
+      font-weight: 600; color: #25d366 !important;
+    }
 
     /* ══════════════════════════════════════════════════════════════
        2. HERO
@@ -169,7 +231,6 @@
       position: absolute; inset: 0; z-index: 2; pointer-events: none;
       background: radial-gradient(ellipse 100% 90% at 60% 40%, transparent 40%, rgba(28,43,30,0.06) 100%);
     }
-    /* Organic blob accent */
     .hero-blob {
       position: absolute; z-index: 1; pointer-events: none;
       border-radius: 50%; filter: blur(80px); opacity: 0.25;
@@ -264,26 +325,21 @@
       transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
     }
     .work-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
-    .work-card-thumb {
-      height: 200px; position: relative; overflow: hidden;
-      display: flex; align-items: center; justify-content: center;
+
+    /* Image thumbnail */
+    .work-card-img-wrap {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 3 / 2;
     }
-    .thumb-green  { background: linear-gradient(135deg, #1a3d2b 0%, #2e5e42 100%); }
-    .thumb-dark   { background: linear-gradient(135deg, #0f0d0b 0%, #1c1815 100%); }
-    .thumb-blue   { background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%); }
-    .thumb-earth  { background: linear-gradient(135deg, #3d2b1a 0%, #6b4226 100%); }
-    .thumb-red    { background: linear-gradient(135deg, #1a0504 0%, #3d0d08 100%); }
-    .thumb-label {
-      font-family: var(--font-disp);
-      font-style: italic; font-size: 1.8rem; font-weight: 400;
-      color: rgba(255,255,255,0.5); letter-spacing: 0.04em;
-      user-select: none;
+    .work-card-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s var(--ease);
     }
-    .thumb-grain {
-      position: absolute; inset: 0; opacity: 0.4; mix-blend-mode: overlay;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)' opacity='0.15'/%3E%3C/svg%3E");
-      background-size: 180px 180px;
-    }
+    .work-card:hover .work-card-img { transform: scale(1.03); }
+
     .work-card-body { padding: 1.8rem; flex: 1; display: flex; flex-direction: column; }
     .work-card-tag {
       font-size: 0.65rem; font-weight: 600;
@@ -314,6 +370,49 @@
     .work-card-link:hover svg { transform: translate(2px, -2px); }
 
     /* ══════════════════════════════════════════════════════════════
+       3b. TESTIMONIALS
+    ══════════════════════════════════════════════════════════════ */
+    #testimonials { background: var(--cream); }
+    .testi-header { margin-bottom: 3rem; }
+    .testi-title {
+      font-family: var(--font-disp);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400; color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+    .testi-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;
+    }
+    .testi-card {
+      background: var(--cream-soft);
+      border: 1px solid rgba(28,43,30,0.08);
+      border-radius: 16px; padding: 2.2rem 2rem;
+      display: flex; flex-direction: column; gap: 1.6rem;
+    }
+    .testi-quote {
+      font-family: var(--font-disp);
+      font-size: 1.05rem; font-style: italic;
+      font-weight: 400; color: var(--ink-mid);
+      line-height: 1.7;
+    }
+    .testi-quote::before { content: '\201C'; color: var(--amber); margin-right: 0.1em; }
+    .testi-quote::after  { content: '\201D'; color: var(--amber); margin-left: 0.1em; }
+    .testi-author {
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .testi-avatar {
+      width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+      background: var(--cream-deep);
+      border: 1px solid rgba(28,43,30,0.1);
+    }
+    .testi-name {
+      font-size: 0.88rem; font-weight: 600; color: var(--ink);
+    }
+    .testi-role {
+      font-size: 0.78rem; color: var(--ink-light); margin-top: 0.1rem;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
        4. ABOUT
     ══════════════════════════════════════════════════════════════ */
     #about { background: var(--cream); position: relative; overflow: hidden; }
@@ -321,7 +420,6 @@
       display: grid; grid-template-columns: 1fr 1.3fr;
       gap: 6rem; align-items: center;
     }
-    /* Decorative H monogram */
     .mono-wrap {
       display: flex; align-items: center; justify-content: center;
     }
@@ -421,6 +519,13 @@
       font-size: 0.88rem; color: rgba(245,239,224,0.55);
       line-height: 1.7;
     }
+    .why-price-anchor {
+      display: block;
+      margin-top: 1rem;
+      font-size: 1rem; font-weight: 700;
+      color: var(--amber);
+      letter-spacing: -0.01em;
+    }
 
     /* ══════════════════════════════════════════════════════════════
        6. CONTACT
@@ -445,7 +550,8 @@
       color: var(--ink-light);
     }
     .cf-group input,
-    .cf-group textarea {
+    .cf-group textarea,
+    .cf-group select {
       width: 100%;
       background: var(--cream);
       border: 1.5px solid rgba(28,43,30,0.12);
@@ -454,11 +560,22 @@
       color: var(--ink); padding: 0.8rem 1rem;
       transition: border-color 0.25s ease, box-shadow 0.25s ease;
       outline: none;
+      appearance: none;
+      -webkit-appearance: none;
     }
+    .cf-group select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7a6d' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+      cursor: pointer;
+    }
+    .cf-group select option[value=""] { color: var(--ink-light); }
     .cf-group input::placeholder,
     .cf-group textarea::placeholder { color: var(--ink-light); }
     .cf-group input:focus,
-    .cf-group textarea:focus {
+    .cf-group textarea:focus,
+    .cf-group select:focus {
       border-color: var(--amber);
       box-shadow: 0 0 0 3px rgba(212,135,58,0.12);
     }
@@ -481,6 +598,15 @@
       font-family: var(--font-disp); font-style: italic;
       font-size: 1.15rem; color: var(--ink-mid);
     }
+    .whatsapp-alt {
+      margin-top: 1.6rem; text-align: center;
+      font-size: 0.88rem; color: var(--ink-light);
+    }
+    .whatsapp-alt a {
+      color: #25d366; font-weight: 600;
+      transition: opacity 0.2s ease;
+    }
+    .whatsapp-alt a:hover { opacity: 0.8; }
     .contact-details {
       display: flex; justify-content: center; gap: 2.5rem;
       margin-top: 2.5rem; padding-top: 2rem;
@@ -532,13 +658,14 @@
     ══════════════════════════════════════════════════════════════ */
     @media (max-width: 860px) {
       .work-grid { grid-template-columns: 1fr; }
+      .testi-grid { grid-template-columns: 1fr; }
       .about-grid { grid-template-columns: 1fr; gap: 3rem; }
       .mono-wrap { display: none; }
       .why-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 768px) {
       .nav-links { display: none; }
-      .hamburger { display: flex; }
+      .kebab-btn { display: flex; }
       .section-pad { padding: 5rem 0; }
       .cf-row { grid-template-columns: 1fr; }
       .footer-inner { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
@@ -552,11 +679,28 @@
 </head>
 <body>
 
-<!-- Mobile Nav -->
-<nav class="mobile-nav" id="mobileNav">
-  <a href="#work"    onclick="closeMobileNav()">Work</a>
-  <a href="#about"   onclick="closeMobileNav()">About</a>
-  <a href="#contact" onclick="closeMobileNav()">Contact</a>
+<!-- Drawer overlay -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<!-- Slide-out drawer -->
+<nav class="drawer" id="drawer" aria-label="Mobile navigation">
+  <button class="drawer-close" id="drawerClose" aria-label="Close menu">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <div class="drawer-links">
+    <a href="#work"    onclick="closeDrawer()">Work</a>
+    <a href="#about"   onclick="closeDrawer()">About</a>
+    <a href="#contact" onclick="closeDrawer()">Contact</a>
+  </div>
+  <hr class="drawer-divider" />
+  <div class="drawer-contact">
+    <a href="mailto:henry.bruskin.studio@gmail.com">henry.bruskin.studio@gmail.com</a>
+    <a href="tel:+436769081511">+43 676 908 1511</a>
+    <a href="https://wa.me/436769081511" class="drawer-wa" target="_blank" rel="noopener noreferrer">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+      WhatsApp
+    </a>
+  </div>
 </nav>
 
 <!-- ══════════════════════════════════════════════
@@ -570,7 +714,7 @@
       <li><a href="#about">About</a></li>
       <li><a href="#contact" class="nav-talk">Let's Talk</a></li>
     </ul>
-    <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+    <button class="kebab-btn" id="kebabBtn" aria-label="Open menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
@@ -605,7 +749,7 @@
       <a href="#contact" class="btn-outline">Get in Touch</a>
     </div>
     <p style="margin-top:3rem; font-size:0.75rem; color:var(--ink-light); font-weight:500;" class="h5">
-      14 years old &nbsp;·&nbsp; Vienna, Austria &nbsp;·&nbsp; Available for projects
+      Vienna, Austria &nbsp;·&nbsp; Available for projects
     </p>
   </div>
 </section>
@@ -622,82 +766,102 @@
 
     <div class="work-grid">
 
-      <article class="work-card reveal d1">
-        <div class="work-card-thumb thumb-green">
-          <div class="thumb-grain"></div>
-          <span class="thumb-label">Green Door</span>
+      <article class="work-card" data-aos="fade-up" data-aos-delay="0">
+        <div class="work-card-img-wrap">
+          <img src="Green Bistro Res.png" alt="Green Door Bistro website screenshot" class="work-card-img" />
         </div>
         <div class="work-card-body">
           <span class="work-card-tag">Restaurant Website</span>
           <h3 class="work-card-name">Green Door Bistro</h3>
-          <p class="work-card-desc">A health-forward bistro hidden inside Hofburg Palace. I built their full brand identity and website from scratch — capturing the warmth of a hidden gem.</p>
+          <p class="work-card-desc">A health-forward bistro hidden inside Hofburg Palace. Full brand identity and website built from scratch — capturing the warmth of a hidden gem.</p>
           <a href="https://henrybuildz.github.io/green-door-bistro/" target="_blank" rel="noopener noreferrer" class="work-card-link">
-            View Site
+            View Site →
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
           </a>
         </div>
       </article>
 
-      <article class="work-card reveal d2">
-        <div class="work-card-thumb thumb-dark">
-          <div class="thumb-grain"></div>
-          <span class="thumb-label">ASPIC</span>
+      <article class="work-card" data-aos="fade-up" data-aos-delay="50">
+        <div class="work-card-img-wrap">
+          <img src="Aspic Res.png" alt="ASPIC Vienna website screenshot" class="work-card-img" />
         </div>
         <div class="work-card-body">
           <span class="work-card-tag">Restaurant Website</span>
           <h3 class="work-card-name">ASPIC Vienna</h3>
           <p class="work-card-desc">A moody, editorial site for one of Vienna's most creative sharing-plates restaurants. Dark, refined, and built to convert.</p>
           <a href="https://henrybuildz.github.io/aspic-vienna/" target="_blank" rel="noopener noreferrer" class="work-card-link">
-            View Site
+            View Site →
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
           </a>
         </div>
       </article>
 
-      <article class="work-card reveal d3">
-        <div class="work-card-thumb thumb-blue">
-          <div class="thumb-grain"></div>
-          <span class="thumb-label">Academic</span>
-        </div>
-        <div class="work-card-body">
-          <span class="work-card-tag">Business Website</span>
-          <h3 class="work-card-name">Henry's Academic Services</h3>
-          <p class="work-card-desc">A clean professional website for an academic services business — complete with service listings and a contact form built with EmailJS.</p>
-          <span class="work-card-link" style="opacity:0.4; cursor:default;">Coming Soon</span>
-        </div>
-      </article>
-
-      <article class="work-card reveal d3">
-        <div class="work-card-thumb thumb-red">
-          <div class="thumb-grain"></div>
-          <span class="thumb-label">Mr Noodle</span>
+      <article class="work-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="work-card-img-wrap">
+          <img src="Mr Noodle.png" alt="Mr Noodle Vienna website screenshot" class="work-card-img" />
         </div>
         <div class="work-card-body">
           <span class="work-card-tag">Restaurant Website</span>
           <h3 class="work-card-name">Mr Noodle Vienna</h3>
           <p class="work-card-desc">A dark, atmospheric site for Vienna's most generous Asian bowl. Full menu with DE/EN toggle, 13 categories, and a premium lacquerware aesthetic.</p>
           <a href="https://henrybuildz.github.io/mr-noodle-vienna/" target="_blank" rel="noopener noreferrer" class="work-card-link">
-            View Site
+            View Site →
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
           </a>
         </div>
       </article>
 
-      <article class="work-card reveal d4">
-        <div class="work-card-thumb thumb-earth">
-          <div class="thumb-grain"></div>
-          <span class="thumb-label">Tolkien</span>
+      <article class="work-card" data-aos="fade-up" data-aos-delay="150">
+        <div class="work-card-img-wrap">
+          <img src="MIS Beauty Res.png" alt="MIS Beauty Coworking website screenshot" class="work-card-img" />
         </div>
         <div class="work-card-body">
-          <span class="work-card-tag">Interactive Web App</span>
-          <h3 class="work-card-name">Tolkien Mythology Quiz</h3>
-          <p class="work-card-desc">A browser-based mythology quiz for Tolkien fans. Built for fun — but it shows what clean interactive JavaScript and a sharp UI can do.</p>
-          <a href="https://henrybuildz.github.io/tolkien-mythology-quiz/" target="_blank" rel="noopener noreferrer" class="work-card-link">
-            View Site
+          <span class="work-card-tag">Restaurant Website</span>
+          <h3 class="work-card-name">MIS Beauty Coworking</h3>
+          <p class="work-card-desc">A refined coworking studio for independent nail artists in Vienna — trilingual (EN/DE/RU), minimal, and built to feel like a quiet escape in the city.</p>
+          <a href="https://henrybuildz.github.io/mis-beauty-coworking/" target="_blank" rel="noopener noreferrer" class="work-card-link">
+            View Site →
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
           </a>
         </div>
       </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     3b. TESTIMONIALS
+══════════════════════════════════════════════ -->
+<section id="testimonials" class="section-pad" aria-labelledby="testi-title">
+  <div class="container">
+    <div class="testi-header reveal">
+      <span class="label">What clients say</span>
+      <h2 class="testi-title" id="testi-title">Straight from the source.</h2>
+    </div>
+    <div class="testi-grid">
+
+      <div class="testi-card" data-aos="fade-up" data-aos-delay="0">
+        <p class="testi-quote">[Client testimonial quote will go here — around 2 sentences]</p>
+        <div class="testi-author">
+          <div class="testi-avatar"></div>
+          <div>
+            <div class="testi-name">[Client Name]</div>
+            <div class="testi-role">[Owner, Restaurant Name]</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card" data-aos="fade-up" data-aos-delay="80">
+        <p class="testi-quote">[Client testimonial quote will go here — around 2 sentences]</p>
+        <div class="testi-author">
+          <div class="testi-avatar"></div>
+          <div>
+            <div class="testi-name">[Client Name]</div>
+            <div class="testi-role">[Owner, Restaurant Name]</div>
+          </div>
+        </div>
+      </div>
 
     </div>
   </div>
@@ -711,22 +875,18 @@
   <div class="container" style="position:relative; z-index:2;">
     <div class="about-grid">
 
-      <!-- Decorative monogram -->
       <div class="mono-wrap reveal-l">
         <div class="mono-outer">
           <div class="mono-bg"></div>
           <div class="mono-ring"></div>
           <div class="mono-h">
             <svg viewBox="0 0 130 130" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <!-- Decorative H letterform -->
               <text x="50%" y="56%" dominant-baseline="middle" text-anchor="middle"
                 font-family="Georgia, serif" font-size="96" font-style="italic"
                 fill="#1c2b1e" opacity="0.12">H</text>
-              <!-- Refined drawn H -->
               <line x1="30" y1="22" x2="30" y2="108" stroke="#1c2b1e" stroke-width="3.5" stroke-linecap="round"/>
               <line x1="100" y1="22" x2="100" y2="108" stroke="#1c2b1e" stroke-width="3.5" stroke-linecap="round"/>
               <line x1="30" y1="65" x2="100" y2="65" stroke="#d4873a" stroke-width="2.5" stroke-linecap="round"/>
-              <!-- Small decorative flourishes -->
               <circle cx="30" cy="22" r="4" fill="#d4873a" opacity="0.6"/>
               <circle cx="100" cy="22" r="4" fill="#d4873a" opacity="0.6"/>
               <circle cx="30" cy="108" r="4" fill="#1c2b1e" opacity="0.3"/>
@@ -737,7 +897,6 @@
         </div>
       </div>
 
-      <!-- Text -->
       <div class="reveal-r">
         <span class="label">About</span>
         <h2 id="about-title">Who's behind<br>the screen.</h2>
@@ -783,6 +942,7 @@
         <span class="why-card-icon">€</span>
         <h3 class="why-card-title">Honest Pricing</h3>
         <p class="why-card-desc">Transparent, fair pricing for small businesses. No hidden fees, no retainers unless you want one.</p>
+        <span class="why-price-anchor">Projects starting from €100.</span>
       </div>
     </div>
   </div>
@@ -812,11 +972,25 @@
           </div>
         </div>
         <div class="cf-group">
+          <label for="cProject">What kind of project?</label>
+          <select id="cProject" name="project_type">
+            <option value="" disabled selected>Select a project type…</option>
+            <option value="restaurant">Restaurant website</option>
+            <option value="small-business">Small business website</option>
+            <option value="redesign">Redesign of existing site</option>
+            <option value="other">Something else</option>
+          </select>
+        </div>
+        <div class="cf-group">
           <label for="cMessage">Message</label>
           <textarea id="cMessage" name="message" placeholder="Tell me about your project…" required></textarea>
         </div>
         <button type="submit" class="btn-send">Send Message →</button>
       </form>
+
+      <div class="whatsapp-alt reveal">
+        Prefer to chat? <a href="https://wa.me/436769081511" target="_blank" rel="noopener noreferrer">Message me on WhatsApp →</a>
+      </div>
 
       <div class="form-success" id="formSuccess">
         <p>Thanks — I'll get back to you within a day. 🙂</p>
@@ -849,9 +1023,13 @@
   </div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 <script>
 (function () {
   'use strict';
+
+  /* AOS */
+  AOS.init({ duration: 800, easing: 'ease-out-cubic', once: true });
 
   /* Navbar */
   const navbar = document.getElementById('navbar');
@@ -859,24 +1037,32 @@
     navbar.classList.toggle('scrolled', window.scrollY > 50);
   }, { passive: true });
 
-  /* Hamburger */
-  const btn   = document.getElementById('hamburgerBtn');
-  const mnav  = document.getElementById('mobileNav');
-  btn.addEventListener('click', () => {
-    const open = mnav.classList.toggle('open');
-    btn.classList.toggle('open', open);
-    btn.setAttribute('aria-expanded', String(open));
-    document.body.style.overflow = open ? 'hidden' : '';
-  });
-  window.closeMobileNav = function () {
-    mnav.classList.remove('open');
-    btn.classList.remove('open');
-    btn.setAttribute('aria-expanded', 'false');
+  /* Drawer (mobile 3-dot menu) */
+  const kebabBtn      = document.getElementById('kebabBtn');
+  const drawer        = document.getElementById('drawer');
+  const drawerOverlay = document.getElementById('drawerOverlay');
+  const drawerClose   = document.getElementById('drawerClose');
+
+  function openDrawer() {
+    drawer.classList.add('open');
+    drawerOverlay.classList.add('open');
+    kebabBtn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+
+  window.closeDrawer = function () {
+    drawer.classList.remove('open');
+    drawerOverlay.classList.remove('open');
+    kebabBtn.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
   };
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobileNav(); });
 
-  /* Reveal */
+  kebabBtn.addEventListener('click', openDrawer);
+  drawerClose.addEventListener('click', closeDrawer);
+  drawerOverlay.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+  /* Reveal (existing scroll animations) */
   const els = document.querySelectorAll('.reveal, .reveal-l, .reveal-r');
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver(entries => {
