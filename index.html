@@ -1,1100 +1,1166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bruskin Studio — Henry Bruskin, Web Designer in Vienna</title>
-  <meta name="description" content="Henry Bruskin — web designer in Vienna. I build websites for restaurants, small businesses, and local brands." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bruskin Studio — Web Design for Vienna Businesses</title>
+  <meta name="description" content="Vienna-based web design studio for restaurants, cafes, and local businesses. Custom sites in 1–2 weeks at pricing that makes sense.">
+  <meta property="og:title" content="Bruskin Studio — Web Design Vienna">
+  <meta property="og:description" content="Custom websites for Vienna restaurants and local businesses. Fast, affordable, and actually good.">
+  <meta property="og:type" content="website">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script>emailjs.init('OqRKcXWXn-dQrX2gy');</script>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500;1,9..144,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
   <style>
-    /* ── Variables ──────────────────────────────────────────────── */
+    /* ─── DESIGN SYSTEM ─────────────────────────────────────────── */
     :root {
-      --cream:      #f5efe0;
-      --cream-soft: #faf8f3;
-      --cream-deep: #ede4ce;
-      --ink:        #1c2b1e;
-      --ink-mid:    #3a4a3c;
-      --ink-light:  #6b7a6d;
-      --amber:      #d4873a;
-      --amber-lt:   #e09a50;
-      --rose:       #c47a6b;
-      --rule:       rgba(28,43,30,0.1);
-      --shadow:     0 4px 24px rgba(28,43,30,0.08);
-      --shadow-lg:  0 16px 48px rgba(28,43,30,0.13);
-      --font-disp:  'Fraunces', Georgia, serif;
-      --font-body:  'Plus Jakarta Sans', sans-serif;
-      --ease:       cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --bg:          #08080A;
+      --bg-raised:   #0F0F13;
+      --bg-card:     #121215;
+      --fg:          #F0EBE4;
+      --fg-muted:    #7C7874;
+      --fg-dim:      #35322F;
+      --accent:      #C9A96E;
+      --accent-hi:   #DFBF85;
+      --border:      rgba(240,235,228,0.07);
+      --border-hi:   rgba(201,169,110,0.25);
+
+      --serif:  'Cormorant', Georgia, serif;
+      --sans:   'Syne', system-ui, sans-serif;
+
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --nav-h: 68px;
     }
 
-    /* ── Reset ──────────────────────────────────────────────────── */
+    /* ─── RESET ─────────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; font-size: 16px; }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+      cursor: none;
+    }
+
     body {
-      font-family: var(--font-body);
-      background: var(--cream);
-      color: var(--ink);
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      line-height: 1.6;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
-      line-height: 1.65;
     }
-    a { text-decoration: none; color: inherit; }
-    ul { list-style: none; }
-    button { cursor: pointer; font-family: inherit; border: none; outline: none; background: none; }
-    img { display: block; max-width: 100%; }
 
-    /* ── Layout ─────────────────────────────────────────────────── */
-    .container { max-width: 1080px; margin: 0 auto; padding: 0 2rem; }
-    .section-pad { padding: 7rem 0; }
-
-    /* ── Grain ──────────────────────────────────────────────────── */
-    .grain {
-      position: absolute; inset: 0; pointer-events: none; z-index: 1;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23g)' opacity='0.1'/%3E%3C/svg%3E");
+    /* Grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9000;
+      opacity: 0.35;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
       background-size: 200px 200px;
-      opacity: 0.5;
-      mix-blend-mode: multiply;
     }
 
-    /* ── Reveal ─────────────────────────────────────────────────── */
-    .reveal {
-      opacity: 0; transform: translateY(24px);
-      transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
-    }
-    .reveal.in { opacity: 1; transform: translateY(0); }
-    .reveal-l { opacity: 0; transform: translateX(-28px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
-    .reveal-r { opacity: 0; transform: translateX(28px);  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
-    .reveal-l.in, .reveal-r.in { opacity: 1; transform: translateX(0); }
-    .d1 { transition-delay: 0.08s; }
-    .d2 { transition-delay: 0.18s; }
-    .d3 { transition-delay: 0.28s; }
-    .d4 { transition-delay: 0.38s; }
+    a    { color: inherit; text-decoration: none; }
+    img  { display: block; max-width: 100%; }
+    button { cursor: none; border: none; background: none; font-family: inherit; color: inherit; }
 
-    /* ── Hero load ───────────────────────────────────────────────── */
-    @keyframes up {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .h1 { animation: up 0.9s var(--ease) 0.1s both; }
-    .h2 { animation: up 0.9s var(--ease) 0.28s both; }
-    .h3 { animation: up 0.9s var(--ease) 0.46s both; }
-    .h4 { animation: up 0.9s var(--ease) 0.64s both; }
-    .h5 { animation: up 0.9s var(--ease) 0.82s both; }
-
-    /* ── Section label ──────────────────────────────────────────── */
-    .label {
-      font-size: 0.67rem; font-weight: 600;
-      letter-spacing: 0.22em; text-transform: uppercase;
-      color: var(--amber); margin-bottom: 0.8rem;
-      display: flex; align-items: center; gap: 0.6rem;
-    }
-    .label::before { content: '✦'; font-size: 0.55rem; }
-
-    /* ══════════════════════════════════════════════════════════════
-       1. NAV
-    ══════════════════════════════════════════════════════════════ */
-    #navbar {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-      padding: 1.4rem 0;
-      transition: background 0.45s ease, box-shadow 0.45s ease, padding 0.35s ease;
-    }
-    #navbar.scrolled {
-      background: rgba(245,239,224,0.96);
-      backdrop-filter: blur(12px);
-      box-shadow: 0 1px 0 var(--rule);
-      padding: 0.9rem 0;
-    }
-    .nav-inner {
-      max-width: 1080px; margin: 0 auto; padding: 0 2rem;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .nav-logo {
-      font-family: var(--font-disp);
-      font-size: 1.2rem; font-weight: 400; font-style: italic;
-      color: var(--ink); letter-spacing: 0.01em;
-    }
-    .nav-links { display: flex; align-items: center; gap: 2rem; }
-    .nav-links a {
-      font-size: 0.78rem; font-weight: 500;
-      color: var(--ink-mid);
-      transition: color 0.25s ease;
-    }
-    .nav-links a:hover { color: var(--ink); }
-    .nav-talk {
-      font-size: 0.75rem; font-weight: 600;
-      color: var(--cream-soft) !important;
-      background: var(--ink);
-      padding: 0.55rem 1.3rem;
-      border-radius: 100px;
-      transition: background 0.25s ease, transform 0.25s ease !important;
-    }
-    .nav-talk:hover { background: var(--ink-mid); transform: translateY(-1px); }
-
-    /* Kebab (3-dot) button — mobile only */
-    .kebab-btn {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      width: 44px; height: 44px;
-      padding: 0;
-      background: none; border: none;
-    }
-    .kebab-btn span {
-      display: block;
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--ink);
-    }
-
-    /* ── Drawer overlay ─────────────────────────────────────────── */
-    .drawer-overlay {
-      display: none;
-      position: fixed; inset: 0; z-index: 1001;
-      background: rgba(0,0,0,0);
-      transition: background 0.3s ease;
-    }
-    .drawer-overlay.open {
-      display: block;
-      background: rgba(0,0,0,0.4);
-    }
-
-    /* ── Drawer panel ───────────────────────────────────────────── */
-    .drawer {
-      position: fixed; top: 0; right: 0; bottom: 0;
-      width: 78%; max-width: 320px;
-      z-index: 1002;
-      background: var(--cream-soft);
-      border-left: 1px solid var(--rule);
-      transform: translateX(100%);
-      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      display: flex; flex-direction: column;
-      padding: 1.8rem 2rem 2.5rem;
-    }
-    .drawer.open { transform: translateX(0); }
-
-    .drawer-close {
-      align-self: flex-end;
-      display: flex; align-items: center; justify-content: center;
-      width: 44px; height: 44px;
-      color: var(--ink-mid);
-      margin-bottom: 2rem;
-    }
-    .drawer-close:hover { color: var(--ink); }
-
-    .drawer-links {
-      display: flex; flex-direction: column; gap: 0.2rem;
-      flex: 1;
-    }
-    .drawer-links a {
-      font-family: var(--font-disp);
-      font-size: 1.5rem; font-weight: 400; font-style: italic;
-      color: var(--ink); padding: 0.6rem 0;
-      transition: color 0.2s ease;
-    }
-    .drawer-links a:hover { color: var(--amber); }
-
-    .drawer-divider {
-      border: none; border-top: 1px solid var(--rule);
-      margin: 1.8rem 0 1.4rem;
-    }
-
-    .drawer-contact {
-      display: flex; flex-direction: column; gap: 0.6rem;
-    }
-    .drawer-contact a {
-      font-size: 0.82rem; color: var(--ink-mid);
-      transition: color 0.2s ease;
-    }
-    .drawer-contact a:hover { color: var(--amber); }
-    .drawer-wa {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      margin-top: 0.2rem;
-      font-weight: 600; color: #25d366 !important;
-    }
-
-    /* ══════════════════════════════════════════════════════════════
-       2. HERO
-    ══════════════════════════════════════════════════════════════ */
-    #hero {
-      min-height: 100vh;
-      display: flex; align-items: center;
-      position: relative; overflow: hidden;
-      background: linear-gradient(150deg, #f5efe0 0%, #ede4ce 55%, #e8dbbe 100%);
-    }
-    .hero-vignette {
-      position: absolute; inset: 0; z-index: 2; pointer-events: none;
-      background: radial-gradient(ellipse 100% 90% at 60% 40%, transparent 40%, rgba(28,43,30,0.06) 100%);
-    }
-    .hero-blob {
-      position: absolute; z-index: 1; pointer-events: none;
-      border-radius: 50%; filter: blur(80px); opacity: 0.25;
-    }
-    .hero-blob-1 {
-      width: 500px; height: 500px; right: -100px; top: -100px;
-      background: var(--amber);
-    }
-    .hero-blob-2 {
-      width: 340px; height: 340px; left: -60px; bottom: 60px;
-      background: var(--rose);
-    }
-    .hero-content {
-      position: relative; z-index: 3;
-      max-width: 780px; padding: 2rem 2rem 2rem calc((100vw - 1080px)/2 + 2rem);
-    }
-    @media (max-width: 1080px) { .hero-content { padding: 2rem; } }
-
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      font-size: 0.72rem; font-weight: 600;
-      letter-spacing: 0.08em;
-      background: rgba(28,43,30,0.07);
-      border: 1px solid rgba(28,43,30,0.12);
-      color: var(--ink-mid);
-      padding: 0.4rem 0.9rem; border-radius: 100px;
-      margin-bottom: 2.2rem;
-    }
-    .hero-badge-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--amber);
-      animation: blink 2.4s ease-in-out infinite;
-    }
-    @keyframes blink {
-      0%,100% { opacity: 1; } 50% { opacity: 0.3; }
-    }
-    .hero-title {
-      font-family: var(--font-disp);
-      font-size: clamp(3rem, 7vw, 5.8rem);
-      font-weight: 400; line-height: 1.05;
-      color: var(--ink); letter-spacing: -0.02em;
-      margin-bottom: 1.6rem;
-    }
-    .hero-title em {
-      font-style: italic; color: var(--amber);
-    }
-    .hero-sub {
-      font-size: clamp(0.95rem, 1.8vw, 1.08rem);
-      color: var(--ink-mid); max-width: 500px;
-      line-height: 1.7; margin-bottom: 2.5rem;
-      font-weight: 400;
-    }
-    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
-    .btn-dark {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      font-size: 0.8rem; font-weight: 600;
-      background: var(--ink); color: var(--cream-soft);
-      padding: 0.85rem 1.8rem; border-radius: 100px;
-      transition: background 0.25s ease, transform 0.25s ease;
-    }
-    .btn-dark:hover { background: var(--ink-mid); transform: translateY(-2px); }
-    .btn-outline {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      font-size: 0.8rem; font-weight: 600;
-      background: transparent; color: var(--ink);
-      padding: 0.85rem 1.8rem; border-radius: 100px;
-      border: 1.5px solid rgba(28,43,30,0.2);
-      transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
-    }
-    .btn-outline:hover { border-color: var(--ink); transform: translateY(-2px); }
-
-    /* ══════════════════════════════════════════════════════════════
-       3. WORK
-    ══════════════════════════════════════════════════════════════ */
-    #work { background: var(--cream-soft); }
-    .work-header { margin-bottom: 3.5rem; }
-    .work-title {
-      font-family: var(--font-disp);
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 400; color: var(--ink);
-      letter-spacing: -0.01em;
-    }
-    .work-grid {
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;
-    }
-    .work-card {
-      background: var(--cream);
-      border: 1px solid rgba(28,43,30,0.08);
-      border-radius: 16px;
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
       overflow: hidden;
-      display: flex; flex-direction: column;
-      transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
     }
-    .work-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
 
-    /* Image thumbnail */
-    .work-card-img-wrap {
+    /* ─── CURSOR ─────────────────────────────────────────────────── */
+    #cursor {
+      width: 10px; height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: fixed;
+      top: 0; left: 0;
+      transform: translate(-50%,-50%);
+      pointer-events: none;
+      z-index: 9999;
+      transition: width .3s var(--ease-out), height .3s var(--ease-out),
+                  background .3s, border .3s;
+    }
+
+    #cursor.grow {
+      width: 44px; height: 44px;
+      background: transparent;
+      border: 1px solid var(--accent);
+    }
+
+    /* ─── NAV ────────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
+      z-index: 100;
+      transition: background .4s var(--ease-out), backdrop-filter .4s;
+    }
+
+    nav.stuck {
+      background: rgba(8,8,10,.88);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-brand {
+      font-family: var(--sans);
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: .65rem;
+      font-weight: 500;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--fg); }
+
+    /* ─── HERO ───────────────────────────────────────────────────── */
+    .hero {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 clamp(1.5rem, 5vw, 4rem) clamp(3.5rem, 8vh, 5.5rem);
       position: relative;
       overflow: hidden;
-      aspect-ratio: 3 / 2;
     }
-    .work-card-img {
-      width: 100%; height: 100%;
-      object-fit: cover;
+
+    /* Large decorative ring */
+    .hero-ring {
+      position: absolute;
+      top: 8%;
+      right: -8%;
+      width: min(55vw, 640px);
+      height: min(55vw, 640px);
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      pointer-events: none;
+    }
+
+    /* Second ring — offset for depth */
+    .hero-ring-2 {
+      position: absolute;
+      top: 18%;
+      right: 4%;
+      width: min(30vw, 320px);
+      height: min(30vw, 320px);
+      border-radius: 50%;
+      border: 1px solid rgba(201,169,110,.08);
+      pointer-events: none;
+    }
+
+    .hero-kicker {
+      font-size: .65rem;
+      font-weight: 600;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: up .7s var(--ease-out) .15s forwards;
+    }
+
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(3.5rem, 10vw, 9.5rem);
+      font-weight: 300;
+      line-height: .93;
+      letter-spacing: -.025em;
+      margin-bottom: 3rem;
+    }
+
+    .hero-title .line {
       display: block;
-      transition: transform 0.4s var(--ease);
+      overflow: hidden;
     }
-    .work-card:hover .work-card-img { transform: scale(1.03); }
 
-    .work-card-body { padding: 1.8rem; flex: 1; display: flex; flex-direction: column; }
-    .work-card-tag {
-      font-size: 0.65rem; font-weight: 600;
-      letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--amber); margin-bottom: 0.6rem;
+    .hero-title .line-inner {
+      display: block;
+      opacity: 0;
+      transform: translateY(100%);
     }
-    .work-card-name {
-      font-family: var(--font-disp);
-      font-size: 1.3rem; font-weight: 500;
-      color: var(--ink); margin-bottom: 0.65rem;
-      letter-spacing: -0.01em;
-    }
-    .work-card-desc {
-      font-size: 0.88rem; color: var(--ink-light);
-      line-height: 1.65; flex: 1; margin-bottom: 1.4rem;
-    }
-    .work-card-link {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      font-size: 0.78rem; font-weight: 600;
-      color: var(--ink);
-      border-bottom: 1.5px solid rgba(28,43,30,0.18);
-      padding-bottom: 0.15rem;
-      transition: color 0.25s ease, border-color 0.25s ease;
-      align-self: flex-start;
-    }
-    .work-card-link:hover { color: var(--amber); border-color: var(--amber); }
-    .work-card-link svg { transition: transform 0.25s ease; }
-    .work-card-link:hover svg { transform: translate(2px, -2px); }
 
-    /* ══════════════════════════════════════════════════════════════
-       3b. TESTIMONIALS
-    ══════════════════════════════════════════════════════════════ */
-    #testimonials { background: var(--cream); }
-    .testi-header { margin-bottom: 3rem; }
-    .testi-title {
-      font-family: var(--font-disp);
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 400; color: var(--ink);
-      letter-spacing: -0.01em;
+    .hero-title .line:nth-child(1) .line-inner { animation: slideUp .85s var(--ease-out) .3s forwards; }
+    .hero-title .line:nth-child(2) .line-inner {
+      animation: slideUp .85s var(--ease-out) .42s forwards;
+      font-style: italic;
+      color: var(--fg-muted);
     }
-    .testi-grid {
-      display: grid; grid-template-columns: 1fr; gap: 1.5rem;
-      max-width: 640px; margin: 0 auto;
+    .hero-title .line:nth-child(3) .line-inner { animation: slideUp .85s var(--ease-out) .54s forwards; }
+
+    .hero-foot {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: up .8s var(--ease-out) .85s forwards;
     }
-    .testi-card {
-      background: var(--cream-soft);
-      border: 1px solid rgba(28,43,30,0.08);
-      border-radius: 16px; padding: 2.2rem 2rem;
-      display: flex; flex-direction: column; gap: 1.6rem;
+
+    .hero-tagline {
+      font-family: var(--serif);
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      font-style: italic;
+      color: var(--fg-muted);
+      max-width: 420px;
+      line-height: 1.5;
     }
-    .testi-quote {
-      font-family: var(--font-disp);
-      font-size: 1.05rem; font-style: italic;
-      font-weight: 400; color: var(--ink-mid);
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .9rem 1.9rem;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-family: var(--sans);
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transition: background .22s var(--ease-out), color .22s, transform .2s;
+    }
+
+    .btn-outline:hover {
+      background: var(--accent);
+      color: var(--bg);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline svg { transition: transform .2s; }
+    .btn-outline:hover svg { transform: translateX(4px); }
+
+    /* scroll cue */
+    .scroll-cue {
+      position: absolute;
+      bottom: clamp(3.5rem, 8vh, 5.5rem);
+      right: clamp(1.5rem, 5vw, 4rem);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+      opacity: 0;
+      animation: fadeIn .8s var(--ease-out) 1.2s forwards;
+    }
+
+    .scroll-cue-label {
+      font-size: .55rem;
+      font-weight: 600;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--fg-dim);
+      writing-mode: vertical-rl;
+    }
+
+    .scroll-cue-line {
+      width: 1px;
+      height: 56px;
+      background: linear-gradient(to bottom, var(--fg-dim), transparent);
+      animation: pulse 2.2s ease-in-out infinite;
+    }
+
+    /* ─── SHARED SECTION CHROME ──────────────────────────────────── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 4rem;
+    }
+
+    .section-num {
+      font-size: .6rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+      color: var(--accent);
+    }
+
+    .section-rule { flex: 1; height: 1px; background: var(--border); }
+
+    .section-label-text {
+      font-size: .6rem;
+      font-weight: 500;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+    }
+
+    /* shared section padding */
+    .section { padding: clamp(5rem, 11vh, 8rem) clamp(1.5rem, 5vw, 4rem); }
+
+    /* ─── SERVICES ───────────────────────────────────────────────── */
+    .services-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: clamp(3rem, 6vw, 5rem);
+      align-items: start;
+    }
+
+    .services-hed {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 4.5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -.02em;
+      margin-bottom: 2rem;
+    }
+
+    .services-hed em { font-style: italic; color: var(--fg-muted); }
+
+    .services-blurb {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--fg-muted);
       line-height: 1.7;
-    }
-    .testi-quote::before { content: '\201C'; color: var(--amber); margin-right: 0.1em; }
-    .testi-quote::after  { content: '\201D'; color: var(--amber); margin-left: 0.1em; }
-    .testi-author {
-      display: flex; align-items: center; gap: 1rem;
-    }
-    .testi-avatar {
-      width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
-      background: var(--cream-deep);
-      border: 1px solid rgba(28,43,30,0.1);
-    }
-    .testi-name {
-      font-size: 0.88rem; font-weight: 600; color: var(--ink);
-    }
-    .testi-role {
-      font-size: 0.78rem; color: var(--ink-light); margin-top: 0.1rem;
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--accent);
+      background: var(--bg-raised);
     }
 
-    /* ══════════════════════════════════════════════════════════════
-       4. ABOUT
-    ══════════════════════════════════════════════════════════════ */
-    #about { background: var(--cream); position: relative; overflow: hidden; }
-    .about-grid {
-      display: grid; grid-template-columns: 1fr 1.3fr;
-      gap: 6rem; align-items: center;
-    }
-    .mono-wrap {
-      display: flex; align-items: center; justify-content: center;
-    }
-    .mono-outer {
-      width: 240px; height: 280px; position: relative;
-    }
-    .mono-bg {
-      position: absolute; inset: 0;
-      background: linear-gradient(145deg, var(--cream-deep), var(--cream-soft));
-      border-radius: 120px 120px 80px 80px;
-      border: 1px solid rgba(212,135,58,0.2);
-    }
-    .mono-h {
-      position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .mono-h svg { width: 130px; height: 130px; }
-    .mono-ring {
-      position: absolute; inset: -12px;
-      border: 1px dashed rgba(212,135,58,0.25);
-      border-radius: 132px 132px 92px 92px;
-      animation: spin 32s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .mono-tag {
-      position: absolute; bottom: -14px; left: 50%; transform: translateX(-50%);
-      background: var(--amber); color: var(--cream-soft);
-      font-size: 0.62rem; font-weight: 700;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      padding: 0.35rem 1rem; border-radius: 100px; white-space: nowrap;
+    .service-list { list-style: none; }
+
+    .service-row {
+      display: grid;
+      grid-template-columns: 2rem 1fr 1.5rem;
+      align-items: center;
+      gap: 1.25rem;
+      padding: 1.6rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: padding-left .3s var(--ease-out);
     }
 
-    .about-text h2 {
-      font-family: var(--font-disp);
-      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-      font-weight: 400; color: var(--ink);
-      letter-spacing: -0.01em; margin-bottom: 1.4rem; line-height: 1.2;
+    .service-row:first-child { border-top: 1px solid var(--border); }
+    .service-row:hover { padding-left: .6rem; }
+
+    .srv-n {
+      font-size: .58rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: .1em;
     }
+
+    .srv-name {
+      font-family: var(--serif);
+      font-size: clamp(1rem, 1.8vw, 1.3rem);
+      font-weight: 400;
+    }
+
+    .srv-arrow {
+      color: var(--fg-dim);
+      transition: color .2s, transform .2s;
+    }
+
+    .service-row:hover .srv-arrow {
+      color: var(--accent);
+      transform: translateX(4px);
+    }
+
+    /* ─── PORTFOLIO ──────────────────────────────────────────────── */
+    .port-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: clamp(220px, 28vw, 340px) clamp(200px, 24vw, 300px);
+      gap: 1.25rem;
+    }
+
+    .port-card:nth-child(1) { grid-column: 1 / 3; grid-row: 1; }
+    .port-card:nth-child(2) { grid-column: 3;     grid-row: 1; }
+    .port-card:nth-child(3) { grid-column: 1;     grid-row: 2; }
+    .port-card:nth-child(4) { grid-column: 2 / 4; grid-row: 2; }
+
+    .port-card {
+      position: relative;
+      overflow: hidden;
+      background: var(--bg-card);
+    }
+
+    .card-art {
+      position: absolute;
+      inset: 0;
+      transition: transform .65s var(--ease-out);
+    }
+
+    .port-card:hover .card-art { transform: scale(1.06); }
+
+    /* Distinct gradient painting per card */
+    .port-card:nth-child(1) .card-art {
+      background:
+        radial-gradient(ellipse at 25% 65%, rgba(201,130,60,.18) 0%, transparent 55%),
+        radial-gradient(ellipse at 75% 20%, rgba(180,100,30,.08) 0%, transparent 50%),
+        linear-gradient(145deg, #14100A 0%, #1E1509 55%, #0A0705 100%);
+    }
+
+    .port-card:nth-child(2) .card-art {
+      background:
+        radial-gradient(ellipse at 60% 40%, rgba(200,50,50,.18) 0%, transparent 55%),
+        radial-gradient(ellipse at 20% 80%, rgba(120,20,20,.1) 0%, transparent 50%),
+        linear-gradient(155deg, #100808 0%, #1C0C0C 55%, #060303 100%);
+    }
+
+    .port-card:nth-child(3) .card-art {
+      background:
+        radial-gradient(ellipse at 50% 30%, rgba(60,90,160,.2) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 75%, rgba(30,50,120,.1) 0%, transparent 50%),
+        linear-gradient(140deg, #080C14 0%, #0C1020 55%, #04060C 100%);
+    }
+
+    .port-card:nth-child(4) .card-art {
+      background:
+        radial-gradient(ellipse at 35% 60%, rgba(40,130,110,.18) 0%, transparent 55%),
+        radial-gradient(ellipse at 75% 25%, rgba(20,90,80,.09) 0%, transparent 50%),
+        linear-gradient(150deg, #060E0D 0%, #0B1614 55%, #030806 100%);
+    }
+
+    .card-veil {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top,
+        rgba(8,8,10,.96) 0%,
+        rgba(8,8,10,.3) 55%,
+        transparent 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.75rem;
+    }
+
+    .card-tag {
+      font-size: .58rem;
+      font-weight: 600;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .45rem;
+      transform: translateY(6px);
+      opacity: .6;
+      transition: transform .3s var(--ease-out), opacity .3s;
+    }
+
+    .port-card:hover .card-tag { transform: translateY(0); opacity: 1; }
+
+    .card-name {
+      font-family: var(--serif);
+      font-size: clamp(1.1rem, 2vw, 1.65rem);
+      font-weight: 400;
+      line-height: 1.2;
+      transform: translateY(6px);
+      transition: transform .35s var(--ease-out) .04s;
+    }
+
+    .port-card:hover .card-name { transform: translateY(0); }
+
+    .card-detail {
+      font-size: .6rem;
+      font-weight: 500;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin-top: .35rem;
+      transform: translateY(10px);
+      opacity: 0;
+      transition: transform .35s var(--ease-out) .09s, opacity .35s .09s;
+    }
+
+    .port-card:hover .card-detail { transform: translateY(0); opacity: 1; }
+
+    /* corner icon */
+    .card-corner {
+      position: absolute;
+      top: 1.25rem; right: 1.25rem;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(240,235,228,.12);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--fg-muted);
+      transform: scale(0);
+      opacity: 0;
+      transition: transform .38s var(--ease-out), opacity .38s;
+    }
+
+    .port-card:hover .card-corner { transform: scale(1); opacity: 1; }
+
+    /* ─── ABOUT ──────────────────────────────────────────────────── */
+    #about { background: var(--bg-raised); border-top: 1px solid var(--border); }
+
+    .about-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: clamp(3rem, 7vw, 6rem);
+      align-items: start;
+    }
+
+    .about-sticky {
+      position: sticky;
+      top: calc(var(--nav-h) + 2rem);
+    }
+
+    .about-hed {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -.02em;
+    }
+
+    .about-hed em { display: block; font-style: italic; color: var(--fg-muted); }
+
+    .about-stats {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+
+    .stat-val {
+      font-family: var(--serif);
+      font-size: 2.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .stat-lbl {
+      font-size: .6rem;
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin-top: .3rem;
+    }
+
     .about-body {
-      font-size: 0.97rem; color: var(--ink-mid);
-      line-height: 1.8; font-weight: 400;
-    }
-    .about-body + .about-body { margin-top: 0.9rem; }
-    .about-pills {
-      display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 2rem;
-    }
-    .pill {
-      font-size: 0.72rem; font-weight: 600;
-      padding: 0.4rem 1rem; border-radius: 100px;
-      background: rgba(28,43,30,0.07);
-      color: var(--ink-mid);
-      border: 1px solid rgba(28,43,30,0.1);
-    }
-    .pill.amber { background: rgba(212,135,58,0.12); border-color: rgba(212,135,58,0.25); color: var(--amber); }
-
-    /* ══════════════════════════════════════════════════════════════
-       5. WHY WORK WITH ME
-    ══════════════════════════════════════════════════════════════ */
-    #why {
-      background: var(--ink);
-      position: relative; overflow: hidden;
-    }
-    .why-grain { opacity: 0.18; mix-blend-mode: soft-light; }
-    .why-inner { position: relative; z-index: 2; }
-    .why-header { margin-bottom: 3.5rem; }
-    .why-header .label { color: var(--amber); }
-    .why-title {
-      font-family: var(--font-disp);
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 400; color: var(--cream-soft);
-      letter-spacing: -0.01em;
-    }
-    .why-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
-    }
-    .why-card {
-      background: rgba(245,239,224,0.06);
-      border: 1px solid rgba(245,239,224,0.1);
-      border-radius: 16px; padding: 2.2rem 1.8rem;
-      transition: background 0.3s ease, border-color 0.3s ease;
-    }
-    .why-card:hover {
-      background: rgba(245,239,224,0.1);
-      border-color: rgba(212,135,58,0.3);
-    }
-    .why-card-icon {
-      font-size: 1.3rem; margin-bottom: 1.1rem; display: block;
-      color: var(--amber);
-    }
-    .why-card-title {
-      font-family: var(--font-disp);
-      font-size: 1.15rem; font-weight: 500;
-      color: var(--cream-soft); margin-bottom: 0.6rem;
-      letter-spacing: -0.01em;
-    }
-    .why-card-desc {
-      font-size: 0.88rem; color: rgba(245,239,224,0.55);
-      line-height: 1.7;
-    }
-    .why-price-anchor {
-      display: block;
-      margin-top: 1rem;
-      font-size: 1rem; font-weight: 700;
-      color: var(--amber);
-      letter-spacing: -0.01em;
+      padding-top: .25rem;
     }
 
-    /* ══════════════════════════════════════════════════════════════
-       6. CONTACT
-    ══════════════════════════════════════════════════════════════ */
-    #contact { background: var(--cream-soft); }
-    .contact-inner { max-width: 620px; margin: 0 auto; text-align: center; }
-    .contact-title {
-      font-family: var(--font-disp);
-      font-size: clamp(2.2rem, 5vw, 3.8rem);
-      font-weight: 400; font-style: italic;
-      color: var(--ink); letter-spacing: -0.01em; margin-bottom: 0.8rem;
+    .about-body p {
+      font-family: var(--serif);
+      font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+      font-weight: 400;
+      line-height: 1.8;
+      color: var(--fg-muted);
     }
+
+    .about-body p + p { margin-top: 1.4em; }
+    .about-body strong { color: var(--fg); font-weight: 500; }
+
+    /* ─── CONTACT ────────────────────────────────────────────────── */
+    #contact { background: var(--bg); border-top: 1px solid var(--border); }
+
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: clamp(3rem, 7vw, 6rem);
+      align-items: start;
+    }
+
+    .contact-hed {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -.02em;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-hed em { font-style: italic; color: var(--fg-muted); }
+
     .contact-sub {
-      font-size: 0.92rem; color: var(--ink-light);
-      margin-bottom: 3rem; line-height: 1.7;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--fg-muted);
+      line-height: 1.65;
+      margin-bottom: 2.5rem;
     }
-    .contact-form { text-align: left; }
-    .cf-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.1rem; }
-    .cf-group label {
-      font-size: 0.65rem; font-weight: 600;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--ink-light);
+
+    .contact-meta { display: flex; flex-direction: column; gap: .9rem; }
+
+    .meta-row { display: flex; align-items: baseline; gap: 1rem; }
+
+    .meta-key {
+      font-size: .58rem;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--fg-dim);
+      min-width: 52px;
     }
-    .cf-group input,
-    .cf-group textarea,
-    .cf-group select {
-      width: 100%;
-      background: var(--cream);
-      border: 1.5px solid rgba(28,43,30,0.12);
-      border-radius: 10px;
-      font-family: var(--font-body); font-size: 0.95rem;
-      color: var(--ink); padding: 0.8rem 1rem;
-      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+
+    .meta-val {
+      font-family: var(--serif);
+      font-size: 1rem;
+      color: var(--fg-muted);
+    }
+
+    /* form */
+    form { display: flex; flex-direction: column; gap: 1.4rem; }
+
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .f-group { display: flex; flex-direction: column; gap: .45rem; }
+
+    .f-group label {
+      font-size: .58rem;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+    }
+
+    .f-group input,
+    .f-group textarea {
+      background: var(--bg-raised);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      font-family: var(--serif);
+      font-size: 1rem;
+      padding: .85rem 1rem;
       outline: none;
-      appearance: none;
+      transition: border-color .2s;
+      width: 100%;
+      resize: none;
       -webkit-appearance: none;
     }
-    .cf-group select {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7a6d' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 1rem center;
-      padding-right: 2.5rem;
-      cursor: pointer;
+
+    .f-group input:focus,
+    .f-group textarea:focus { border-color: var(--border-hi); }
+
+    .f-group input::placeholder,
+    .f-group textarea::placeholder {
+      color: var(--fg-dim);
+      font-style: italic;
     }
-    .cf-group select option[value=""] { color: var(--ink-light); }
-    .cf-group input::placeholder,
-    .cf-group textarea::placeholder { color: var(--ink-light); }
-    .cf-group input:focus,
-    .cf-group textarea:focus,
-    .cf-group select:focus {
-      border-color: var(--amber);
-      box-shadow: 0 0 0 3px rgba(212,135,58,0.12);
+
+    .btn-solid {
+      display: inline-flex;
+      align-items: center;
+      gap: .75rem;
+      padding: 1rem 2.2rem;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: var(--sans);
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      align-self: flex-start;
+      transition: background .22s var(--ease-out), transform .2s;
     }
-    .cf-group textarea { min-height: 120px; resize: vertical; }
-    .cf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .btn-send {
-      width: 100%; margin-top: 0.5rem;
-      font-size: 0.82rem; font-weight: 600;
-      background: var(--ink); color: var(--cream-soft);
-      padding: 1rem; border-radius: 100px;
-      transition: background 0.25s ease, transform 0.25s ease;
+
+    .btn-solid:hover { background: var(--accent-hi); transform: translateY(-2px); }
+    .btn-solid:disabled { opacity: .45; pointer-events: none; }
+
+    .f-status {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: .95rem;
+      padding: .8rem 1rem;
+      display: none;
     }
-    .btn-send:hover { background: var(--ink-mid); transform: translateY(-1px); }
-    .form-success {
-      display: none; text-align: center; padding: 2rem;
-      background: rgba(28,43,30,0.05); border-radius: 16px;
-      border: 1.5px solid rgba(28,43,30,0.1);
-    }
-    .form-success p {
-      font-family: var(--font-disp); font-style: italic;
-      font-size: 1.15rem; color: var(--ink-mid);
-    }
-    .whatsapp-alt {
-      margin-top: 1.6rem; text-align: center;
-      font-size: 0.88rem; color: var(--ink-light);
-    }
-    .whatsapp-alt a {
-      color: #25d366; font-weight: 600;
-      transition: opacity 0.2s ease;
-    }
-    .whatsapp-alt a:hover { opacity: 0.8; }
-    .contact-details {
-      display: flex; justify-content: center; gap: 2.5rem;
-      margin-top: 2.5rem; padding-top: 2rem;
-      border-top: 1px solid var(--rule);
+
+    .f-status.ok  { display:block; color:#74C98A; background:rgba(116,201,138,.06); border:1px solid rgba(116,201,138,.18); }
+    .f-status.err { display:block; color:#D97070; background:rgba(217,112,112,.06); border:1px solid rgba(217,112,112,.18); }
+
+    /* ─── FOOTER ─────────────────────────────────────────────────── */
+    footer {
+      padding: 1.75rem clamp(1.5rem, 5vw, 4rem);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       flex-wrap: wrap;
+      gap: 1rem;
     }
-    .cd-item {
-      display: flex; flex-direction: column; align-items: center; gap: 0.25rem;
-    }
-    .cd-label {
-      font-size: 0.6rem; font-weight: 600;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--ink-light);
-    }
-    .cd-value {
-      font-size: 0.9rem; font-weight: 500;
-      color: var(--ink);
-    }
-    .cd-value a { color: var(--ink); transition: color 0.25s ease; }
-    .cd-value a:hover { color: var(--amber); }
 
-    /* ══════════════════════════════════════════════════════════════
-       7. FOOTER
-    ══════════════════════════════════════════════════════════════ */
-    #footer {
-      background: var(--cream);
-      padding: 3rem 0;
-      border-top: 1px solid var(--rule);
+    .ft-copy {
+      font-size: .6rem;
+      font-weight: 600;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--fg-dim);
     }
-    .footer-inner {
-      max-width: 1080px; margin: 0 auto; padding: 0 2rem;
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 1rem;
-    }
-    .footer-logo {
-      font-family: var(--font-disp);
-      font-size: 1.1rem; font-style: italic; font-weight: 400;
-      color: var(--ink);
-    }
-    .footer-copy { font-size: 0.75rem; color: var(--ink-light); }
-    .footer-email {
-      font-size: 0.78rem; color: var(--ink-light);
-      transition: color 0.25s ease;
-    }
-    .footer-email:hover { color: var(--amber); }
 
-    /* ══════════════════════════════════════════════════════════════
-       RESPONSIVE
-    ══════════════════════════════════════════════════════════════ */
-    @media (max-width: 860px) {
-      .work-grid { grid-template-columns: 1fr; }
-      .testi-grid { grid-template-columns: 1fr; }
-      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
-      .mono-wrap { display: none; }
-      .why-grid { grid-template-columns: 1fr; }
+    .ft-loc {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: .95rem;
+      color: var(--fg-muted);
     }
+
+    /* ─── SCROLL REVEAL ──────────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .85s var(--ease-out), transform .85s var(--ease-out);
+    }
+
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    .d1 { transition-delay: .1s; }
+    .d2 { transition-delay: .2s; }
+    .d3 { transition-delay: .3s; }
+
+    /* ─── KEYFRAMES ──────────────────────────────────────────────── */
+    @keyframes up      { to { opacity:1; transform:translateY(0); } }
+    @keyframes slideUp { to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeIn  { to { opacity:.65; } }
+    @keyframes pulse   { 0%,100%{opacity:.25} 50%{opacity:1} }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .services-layout { grid-template-columns: 1fr; }
+    }
+
     @media (max-width: 768px) {
+      html { cursor: auto; }
+      #cursor { display: none; }
+
       .nav-links { display: none; }
-      .kebab-btn { display: flex; }
-      .section-pad { padding: 5rem 0; }
-      .cf-row { grid-template-columns: 1fr; }
-      .footer-inner { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+
+      .hero-foot { flex-direction: column; align-items: flex-start; }
+
+      .port-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: repeat(2, clamp(180px,40vw,260px));
+      }
+
+      .port-card:nth-child(1) { grid-column:1/3; grid-row:1; }
+      .port-card:nth-child(2) { grid-column:1;   grid-row:2; }
+      .port-card:nth-child(3) { grid-column:2;   grid-row:2; }
+      .port-card:nth-child(4) { display: none; }
+
+      .about-layout  { grid-template-columns: 1fr; }
+      .about-sticky  { position: static; }
+      .contact-layout { grid-template-columns: 1fr; }
+      .form-row-2 { grid-template-columns: 1fr; }
     }
+
     @media (max-width: 480px) {
-      .hero-title { font-size: 2.8rem; }
-      .hero-actions { flex-direction: column; align-items: flex-start; }
-      .contact-details { flex-direction: column; align-items: center; gap: 1.2rem; }
+      .port-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, clamp(200px,55vw,280px));
+      }
+      .port-card:nth-child(1) { grid-column:1; }
+      .port-card:nth-child(2) { grid-column:1; grid-row:2; }
+      .port-card:nth-child(3) { grid-column:1; grid-row:3; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
     }
   </style>
 </head>
 <body>
 
-<!-- Drawer overlay -->
-<div class="drawer-overlay" id="drawerOverlay"></div>
+  <div id="cursor" aria-hidden="true"></div>
 
-<!-- Slide-out drawer -->
-<nav class="drawer" id="drawer" aria-label="Mobile navigation">
-  <button class="drawer-close" id="drawerClose" aria-label="Close menu">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-  </button>
-  <div class="drawer-links">
-    <a href="#work"    onclick="closeDrawer()">Work</a>
-    <a href="#about"   onclick="closeDrawer()">About</a>
-    <a href="#contact" onclick="closeDrawer()">Contact</a>
-  </div>
-  <hr class="drawer-divider" />
-  <div class="drawer-contact">
-    <a href="mailto:henry.bruskin.studio@gmail.com">henry.bruskin.studio@gmail.com</a>
-    <a href="tel:+436769081511">+43 676 908 1511</a>
-    <a href="https://wa.me/436769081511" class="drawer-wa" target="_blank" rel="noopener noreferrer">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-      WhatsApp
-    </a>
-  </div>
-</nav>
-
-<!-- ══════════════════════════════════════════════
-     1. NAV
-══════════════════════════════════════════════ -->
-<header id="navbar" role="banner">
-  <div class="nav-inner">
-    <a href="#hero" class="nav-logo">Bruskin Studio</a>
+  <!-- NAV -->
+  <nav id="nav" aria-label="Main navigation">
+    <a href="#" class="nav-brand">Bruskin Studio</a>
     <ul class="nav-links" role="list">
-      <li><a href="#work">Work</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#portfolio">Work</a></li>
       <li><a href="#about">About</a></li>
-      <li><a href="#contact" class="nav-talk">Let's Talk</a></li>
+      <li><a href="#contact">Contact</a></li>
     </ul>
-    <button class="kebab-btn" id="kebabBtn" aria-label="Open menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</header>
+  </nav>
 
-<main>
+  <!-- HERO -->
+  <section class="hero" aria-label="Introduction">
+    <div class="hero-ring" aria-hidden="true"></div>
+    <div class="hero-ring-2" aria-hidden="true"></div>
 
-<!-- ══════════════════════════════════════════════
-     2. HERO
-══════════════════════════════════════════════ -->
-<section id="hero" aria-labelledby="hero-title">
-  <div class="grain"></div>
-  <div class="hero-blob hero-blob-1"></div>
-  <div class="hero-blob hero-blob-2"></div>
-  <div class="hero-vignette"></div>
-  <div class="hero-content">
-    <div class="hero-badge h1">
-      <span class="hero-badge-dot"></span>
-      Based in Vienna ✦
-    </div>
-    <h1 class="hero-title h2" id="hero-title">
-      Websites that<br><em>mean something.</em>
+    <p class="hero-kicker">Vienna Web Design Studio</p>
+
+    <h1 class="hero-title">
+      <span class="line"><span class="line-inner">Vienna has</span></span>
+      <span class="line"><span class="line-inner">great restaurants.</span></span>
+      <span class="line"><span class="line-inner">Most don't have websites.</span></span>
     </h1>
-    <p class="hero-sub h3">
-      I design and build websites for restaurants, businesses, and brands in Vienna. Let's make yours.
-    </p>
-    <div class="hero-actions h4">
-      <a href="#work" class="btn-dark">
-        See My Work
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+
+    <div class="hero-foot">
+      <p class="hero-tagline">We build them. Custom design, live in 1–2 weeks, at pricing that makes sense for a small business.</p>
+      <a href="#contact" class="btn-outline">
+        Start a project
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M2 8h12M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
       </a>
-      <a href="#contact" class="btn-outline">Get in Touch</a>
-    </div>
-    <p style="margin-top:3rem; font-size:0.75rem; color:var(--ink-light); font-weight:500;" class="h5">
-      Vienna, Austria &nbsp;·&nbsp; Available for projects
-    </p>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════
-     3. WORK
-══════════════════════════════════════════════ -->
-<section id="work" class="section-pad" aria-labelledby="work-title">
-  <div class="container">
-    <div class="work-header reveal">
-      <span class="label">Selected Work</span>
-      <h2 class="work-title" id="work-title">Things I've built.</h2>
     </div>
 
-    <div class="work-grid">
-
-      <article class="work-card" data-aos="fade-up" data-aos-delay="0">
-        <div class="work-card-img-wrap">
-          <img src="Green Bistro Res.png" alt="Green Door Bistro website screenshot" class="work-card-img" />
-        </div>
-        <div class="work-card-body">
-          <span class="work-card-tag">Restaurant Website</span>
-          <h3 class="work-card-name">Green Door Bistro</h3>
-          <p class="work-card-desc">A health-forward bistro hidden inside Hofburg Palace. Full brand identity and website built from scratch — capturing the warmth of a hidden gem.</p>
-          <a href="https://henrybuildz.github.io/green-door-bistro/" target="_blank" rel="noopener noreferrer" class="work-card-link">
-            View Site →
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-          </a>
-        </div>
-      </article>
-
-      <article class="work-card" data-aos="fade-up" data-aos-delay="50">
-        <div class="work-card-img-wrap">
-          <img src="Aspic Res.png" alt="ASPIC Vienna website screenshot" class="work-card-img" />
-        </div>
-        <div class="work-card-body">
-          <span class="work-card-tag">Restaurant Website</span>
-          <h3 class="work-card-name">ASPIC Vienna</h3>
-          <p class="work-card-desc">A moody, editorial site for one of Vienna's most creative sharing-plates restaurants. Dark, refined, and built to convert.</p>
-          <a href="https://henrybuildz.github.io/aspic-vienna/" target="_blank" rel="noopener noreferrer" class="work-card-link">
-            View Site →
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-          </a>
-        </div>
-      </article>
-
-      <article class="work-card" data-aos="fade-up" data-aos-delay="100">
-        <div class="work-card-img-wrap">
-          <img src="Mr Noodle.png" alt="Mr Noodle Vienna website screenshot" class="work-card-img" />
-        </div>
-        <div class="work-card-body">
-          <span class="work-card-tag">Restaurant Website</span>
-          <h3 class="work-card-name">Mr Noodle Vienna</h3>
-          <p class="work-card-desc">A dark, atmospheric site for Vienna's most generous Asian bowl. Full menu with DE/EN toggle, 13 categories, and a premium lacquerware aesthetic.</p>
-          <a href="https://henrybuildz.github.io/mr-noodle-vienna/" target="_blank" rel="noopener noreferrer" class="work-card-link">
-            View Site →
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-          </a>
-        </div>
-      </article>
-
-      <article class="work-card" data-aos="fade-up" data-aos-delay="150">
-        <div class="work-card-img-wrap">
-          <img src="MIS Beauty Res.png" alt="MIS Beauty Coworking website screenshot" class="work-card-img" />
-        </div>
-        <div class="work-card-body">
-          <span class="work-card-tag">Restaurant Website</span>
-          <h3 class="work-card-name">MIS Beauty Coworking</h3>
-          <p class="work-card-desc">A refined coworking studio for independent nail artists in Vienna — trilingual (EN/DE/RU), minimal, and built to feel like a quiet escape in the city.</p>
-          <a href="https://henrybuildz.github.io/mis-beauty-coworking/" target="_blank" rel="noopener noreferrer" class="work-card-link">
-            View Site →
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-          </a>
-        </div>
-      </article>
-
+    <div class="scroll-cue" aria-hidden="true">
+      <span class="scroll-cue-label">Scroll</span>
+      <div class="scroll-cue-line"></div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ══════════════════════════════════════════════
-     3b. TESTIMONIALS
-══════════════════════════════════════════════ -->
-<section id="testimonials" class="section-pad" aria-labelledby="testi-title">
-  <div class="container">
-    <div class="testi-header reveal">
-      <span class="label">What clients say</span>
-      <h2 class="testi-title" id="testi-title">Straight from the source.</h2>
+  <!-- SERVICES -->
+  <section id="services" class="section" aria-labelledby="services-hed">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <div class="section-rule"></div>
+      <span class="section-label-text">Services</span>
     </div>
-    <div class="testi-grid">
 
-      <div class="testi-card" data-aos="fade-up" data-aos-delay="0">
-        <p class="testi-quote">Das Ergebnis hat meine Erwartungen sogar übertroffen – sehr professionell und zudem äußerst schnell umgesetzt. Wenn Sie eine Website für Ihr Unternehmen brauchen, kann ich Henry wärmstens weiterempfehlen.</p>
-        <div class="testi-author">
-          <div class="testi-avatar"></div>
-          <div>
-            <div class="testi-name">Fang Fang Xi</div>
-            <div class="testi-role">Owner, Mr Noodle Vienna</div>
-          </div>
-        </div>
-      </div>
-
-
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════
-     4. ABOUT
-══════════════════════════════════════════════ -->
-<section id="about" class="section-pad" aria-labelledby="about-title">
-  <div class="grain" style="opacity:0.3; mix-blend-mode:multiply;"></div>
-  <div class="container" style="position:relative; z-index:2;">
-    <div class="about-grid">
-
-      <div class="mono-wrap reveal-l">
-        <div class="mono-outer">
-          <div class="mono-bg"></div>
-          <div class="mono-ring"></div>
-          <div class="mono-h">
-            <svg viewBox="0 0 130 130" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <text x="50%" y="56%" dominant-baseline="middle" text-anchor="middle"
-                font-family="Georgia, serif" font-size="96" font-style="italic"
-                fill="#1c2b1e" opacity="0.12">H</text>
-              <line x1="30" y1="22" x2="30" y2="108" stroke="#1c2b1e" stroke-width="3.5" stroke-linecap="round"/>
-              <line x1="100" y1="22" x2="100" y2="108" stroke="#1c2b1e" stroke-width="3.5" stroke-linecap="round"/>
-              <line x1="30" y1="65" x2="100" y2="65" stroke="#d4873a" stroke-width="2.5" stroke-linecap="round"/>
-              <circle cx="30" cy="22" r="4" fill="#d4873a" opacity="0.6"/>
-              <circle cx="100" cy="22" r="4" fill="#d4873a" opacity="0.6"/>
-              <circle cx="30" cy="108" r="4" fill="#1c2b1e" opacity="0.3"/>
-              <circle cx="100" cy="108" r="4" fill="#1c2b1e" opacity="0.3"/>
-            </svg>
-          </div>
-          <span class="mono-tag">Vienna, Austria</span>
-        </div>
-      </div>
-
-      <div class="reveal-r">
-        <span class="label">About</span>
-        <h2 id="about-title">Who's behind<br>the screen.</h2>
-        <p class="about-body">
-          I'm Henry — a 14-year-old web designer based in Vienna. I started building websites because I wanted to see ideas come to life on screen. Now I help local businesses get online with sites that actually reflect who they are.
-        </p>
-        <p class="about-body">
-          I work with restaurants, small businesses, and anyone who has something worth showing the world. Every site I build is handcrafted — no templates, no shortcuts. Being young means I'm faster, more curious, and hungrier than most.
-        </p>
-        <div class="about-pills">
-          <span class="pill">Vienna-based</span>
-          <span class="pill amber">Available for work</span>
-          <span class="pill">English &amp; German</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════
-     5. WHY WORK WITH ME
-══════════════════════════════════════════════ -->
-<section id="why" class="section-pad" aria-labelledby="why-title">
-  <div class="grain why-grain"></div>
-  <div class="why-inner container">
-    <div class="why-header reveal">
-      <span class="label">The Offer</span>
-      <h2 class="why-title" id="why-title">What you get.</h2>
-    </div>
-    <div class="why-grid">
-      <div class="why-card reveal d1">
-        <span class="why-card-icon">✦</span>
-        <h3 class="why-card-title">Custom Design</h3>
-        <p class="why-card-desc">No templates. Every site is built specifically for your business and your audience — from scratch, every time.</p>
-      </div>
-      <div class="why-card reveal d2">
-        <span class="why-card-icon">⚡</span>
-        <h3 class="why-card-title">Fast Turnaround</h3>
-        <p class="why-card-desc">Most sites delivered within 1–2 weeks. No long agency timelines, no waiting around. Just fast, clean execution.</p>
-      </div>
-      <div class="why-card reveal d3">
-        <span class="why-card-icon">€</span>
-        <h3 class="why-card-title">Honest Pricing</h3>
-        <p class="why-card-desc">Transparent, fair pricing for small businesses. No hidden fees, no retainers unless you want one.</p>
-        <span class="why-price-anchor">Projects starting from €100.</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════
-     6. CONTACT
-══════════════════════════════════════════════ -->
-<section id="contact" class="section-pad" aria-labelledby="contact-title">
-  <div class="container">
-    <div class="contact-inner">
+    <div class="services-layout">
       <div class="reveal">
-        <span class="label" style="justify-content:center;">Contact</span>
-        <h2 class="contact-title" id="contact-title">Let's build something.</h2>
-        <p class="contact-sub">Based in Vienna. Available for local and remote projects.</p>
+        <h2 class="services-hed" id="services-hed">
+          A website.<br>
+          <em>Done in a week.</em><br>
+          For real.
+        </h2>
+        <p class="services-blurb">
+          Most diners check online before walking in. A restaurant with no website doesn't exist to half the people who'd love it. That's the problem we fix.
+        </p>
       </div>
 
-      <form class="contact-form reveal" id="contactForm" novalidate>
-        <div class="cf-row">
-          <div class="cf-group">
-            <label for="cName">Name</label>
-            <input type="text" id="cName" name="name" placeholder="Your name" autocomplete="name" required />
+      <ul class="service-list reveal d1" role="list">
+        <li class="service-row">
+          <span class="srv-n">01</span>
+          <span class="srv-name">Custom Web Design</span>
+          <svg class="srv-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M4 10h12M10 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </li>
+        <li class="service-row">
+          <span class="srv-n">02</span>
+          <span class="srv-name">Domain &amp; Hosting Setup</span>
+          <svg class="srv-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M4 10h12M10 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </li>
+        <li class="service-row">
+          <span class="srv-n">03</span>
+          <span class="srv-name">Mobile-First Development</span>
+          <svg class="srv-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M4 10h12M10 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </li>
+        <li class="service-row">
+          <span class="srv-n">04</span>
+          <span class="srv-name">Google Search Visibility</span>
+          <svg class="srv-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M4 10h12M10 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </li>
+        <li class="service-row">
+          <span class="srv-n">05</span>
+          <span class="srv-name">Ongoing Updates (optional)</span>
+          <svg class="srv-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M4 10h12M10 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section id="portfolio" class="section" aria-labelledby="portfolio-hed">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <div class="section-rule"></div>
+      <span class="section-label-text">Selected Work</span>
+    </div>
+
+    <h2 class="sr-only" id="portfolio-hed">Portfolio</h2>
+
+    <div class="port-grid">
+
+      <article class="port-card reveal">
+        <div class="card-art" role="img" aria-label="Green Door Bistro project"></div>
+        <div class="card-veil">
+          <p class="card-tag">Restaurant · Vienna</p>
+          <h3 class="card-name">Green Door Bistro</h3>
+          <p class="card-detail">Live in 6 days</p>
+        </div>
+        <div class="card-corner" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M2 12L12 2M12 2H5M12 2v7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </article>
+
+      <article class="port-card reveal d1">
+        <div class="card-art" role="img" aria-label="Mr. Noodle project"></div>
+        <div class="card-veil">
+          <p class="card-tag">Asian Restaurant · Vienna</p>
+          <h3 class="card-name">Mr. Noodle</h3>
+          <p class="card-detail">Full redesign</p>
+        </div>
+        <div class="card-corner" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M2 12L12 2M12 2H5M12 2v7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </article>
+
+      <article class="port-card reveal d2">
+        <div class="card-art" role="img" aria-label="ASPIC Vienna project"></div>
+        <div class="card-veil">
+          <p class="card-tag">Fine Dining · Vienna</p>
+          <h3 class="card-name">ASPIC Vienna</h3>
+          <p class="card-detail">New launch</p>
+        </div>
+        <div class="card-corner" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M2 12L12 2M12 2H5M12 2v7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </article>
+
+      <article class="port-card reveal d3">
+        <div class="card-art" role="img" aria-label="Stella Marina project"></div>
+        <div class="card-veil">
+          <p class="card-tag">Seafood · Vienna</p>
+          <h3 class="card-name">Stella Marina</h3>
+          <p class="card-detail">Brand + web</p>
+        </div>
+        <div class="card-corner" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M2 12L12 2M12 2H5M12 2v7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="section" aria-labelledby="about-hed">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <div class="section-rule"></div>
+      <span class="section-label-text">About the Studio</span>
+    </div>
+
+    <div class="about-layout">
+      <div class="about-sticky reveal">
+        <h2 class="about-hed" id="about-hed">
+          One person.<br>
+          <em>One focus.</em>
+        </h2>
+        <div class="about-stats">
+          <div>
+            <div class="stat-val">1–2</div>
+            <div class="stat-lbl">Week turnaround</div>
           </div>
-          <div class="cf-group">
-            <label for="cEmail">Email</label>
-            <input type="email" id="cEmail" name="email" placeholder="your@email.com" autocomplete="email" required />
+          <div>
+            <div class="stat-val">4</div>
+            <div class="stat-lbl">Vienna clients</div>
+          </div>
+          <div>
+            <div class="stat-val">100%</div>
+            <div class="stat-lbl">Local businesses</div>
           </div>
         </div>
-        <div class="cf-group">
-          <label for="cProject">What kind of project?</label>
-          <select id="cProject" name="project_type">
-            <option value="" disabled selected>Select a project type…</option>
-            <option value="restaurant">Restaurant website</option>
-            <option value="small-business">Small business website</option>
-            <option value="redesign">Redesign of existing site</option>
-            <option value="other">Something else</option>
-          </select>
-        </div>
-        <div class="cf-group">
-          <label for="cMessage">Message</label>
-          <textarea id="cMessage" name="message" placeholder="Tell me about your project…" required></textarea>
-        </div>
-        <button type="submit" class="btn-send">Send Message →</button>
-      </form>
-
-      <div class="whatsapp-alt reveal">
-        Prefer to chat? <a href="https://wa.me/436769081511" target="_blank" rel="noopener noreferrer">Message me on WhatsApp →</a>
       </div>
 
-      <div class="form-success" id="formSuccess">
-        <p>Thanks — I'll get back to you within a day. 🙂</p>
-      </div>
-
-      <div class="contact-details reveal">
-        <div class="cd-item">
-          <span class="cd-label">Email</span>
-          <span class="cd-value"><a href="mailto:henrybru10@gmail.com">henrybru10@gmail.com</a></span>
-        </div>
-        <div class="cd-item">
-          <span class="cd-label">Phone</span>
-          <span class="cd-value"><a href="tel:+436769081511">+43 676 908 1511</a></span>
-        </div>
+      <div class="about-body reveal d1">
+        <p>
+          I'm a Vienna-based designer. My clients are mostly <strong>restaurants, cafes, and shops</strong> — places with regulars and no website. I build sites quickly, keep the process simple, and stay reachable after launch.
+        </p>
+        <p>
+          I use AI in my workflow. It's why I can turn a project around in a week at a price that makes sense for a small business — without cutting corners on the design.
+        </p>
+        <p>
+          No agencies, no middlemen. You work with me directly. If something needs changing six months from now, you reach me directly.
+        </p>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-</main>
+  <!-- CONTACT -->
+  <section id="contact" class="section" aria-labelledby="contact-hed">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <div class="section-rule"></div>
+      <span class="section-label-text">Get in touch</span>
+    </div>
 
-<!-- ══════════════════════════════════════════════
-     7. FOOTER
-══════════════════════════════════════════════ -->
-<footer id="footer" role="contentinfo">
-  <div class="footer-inner">
-    <span class="footer-logo">Bruskin Studio</span>
-    <span class="footer-copy">© 2026 Henry Bruskin. Vienna, Austria.</span>
-    <a href="mailto:henrybru10@gmail.com" class="footer-email">henrybru10@gmail.com</a>
-  </div>
-</footer>
+    <div class="contact-layout">
+      <div class="reveal">
+        <h2 class="contact-hed" id="contact-hed">
+          Let's talk about<br>
+          <em>your website.</em>
+        </h2>
+        <p class="contact-sub">Tell me a bit about your business. I'll get back to you within a day.</p>
+        <div class="contact-meta">
+          <div class="meta-row">
+            <span class="meta-key">Based</span>
+            <span class="meta-val">Vienna, Austria</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-key">Email</span>
+            <span class="meta-val">alex@bruskin.studio</span>
+          </div>
+        </div>
+      </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-<script>
-(function () {
-  'use strict';
+      <form id="contact-form" class="reveal d1" novalidate aria-label="Contact form">
+        <div class="form-row-2">
+          <div class="f-group">
+            <label for="f-name">Your name <span aria-hidden="true">*</span></label>
+            <input type="text" id="f-name" name="name" placeholder="Maria Müller"
+                   required autocomplete="name">
+          </div>
+          <div class="f-group">
+            <label for="f-biz">Business name</label>
+            <input type="text" id="f-biz" name="business" placeholder="Café Schönbrunn"
+                   autocomplete="organization">
+          </div>
+        </div>
+        <div class="f-group">
+          <label for="f-email">Email address <span aria-hidden="true">*</span></label>
+          <input type="email" id="f-email" name="email" placeholder="maria@example.com"
+                 required autocomplete="email">
+        </div>
+        <div class="f-group">
+          <label for="f-msg">Tell me about your project <span aria-hidden="true">*</span></label>
+          <textarea id="f-msg" name="message" rows="5"
+                    placeholder="We're a small restaurant in the 7th district and we've been meaning to get a website for years..."
+                    required></textarea>
+        </div>
+        <button type="submit" class="btn-solid" id="submit-btn">
+          Send message
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2 8h12M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="f-status" id="f-status" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+  </section>
 
-  /* AOS */
-  AOS.init({ duration: 800, easing: 'ease-out-cubic', once: true });
+  <!-- FOOTER -->
+  <footer>
+    <span class="ft-copy">&copy; 2026 Bruskin Studio</span>
+    <span class="ft-loc">Designed in Vienna</span>
+    <span class="ft-copy">All rights reserved</span>
+  </footer>
 
-  /* Navbar */
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 50);
-  }, { passive: true });
+  <script>
+    /* ── EmailJS ─────────────────────────────────────────────────── */
+    // TODO: Replace with your actual EmailJS credentials
+    emailjs.init('YOUR_PUBLIC_KEY');  // ← replace YOUR_PUBLIC_KEY
 
-  /* Drawer (mobile 3-dot menu) */
-  const kebabBtn      = document.getElementById('kebabBtn');
-  const drawer        = document.getElementById('drawer');
-  const drawerOverlay = document.getElementById('drawerOverlay');
-  const drawerClose   = document.getElementById('drawerClose');
+    /* ── Custom cursor ───────────────────────────────────────────── */
+    const cursor = document.getElementById('cursor');
+    let mx = 0, my = 0, cx = 0, cy = 0;
 
-  function openDrawer() {
-    drawer.classList.add('open');
-    drawerOverlay.classList.add('open');
-    kebabBtn.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
-  }
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
 
-  window.closeDrawer = function () {
-    drawer.classList.remove('open');
-    drawerOverlay.classList.remove('open');
-    kebabBtn.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
-  };
+    (function tick() {
+      cx += (mx - cx) * 0.11;
+      cy += (my - cy) * 0.11;
+      cursor.style.left = cx + 'px';
+      cursor.style.top  = cy + 'px';
+      requestAnimationFrame(tick);
+    })();
 
-  kebabBtn.addEventListener('click', openDrawer);
-  drawerClose.addEventListener('click', closeDrawer);
-  drawerOverlay.addEventListener('click', closeDrawer);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+    document.querySelectorAll('a,button,.port-card,.service-row').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('grow'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('grow'));
+    });
 
-  /* Reveal (existing scroll animations) */
-  const els = document.querySelectorAll('.reveal, .reveal-l, .reveal-r');
-  if ('IntersectionObserver' in window) {
+    /* ── Nav scroll ──────────────────────────────────────────────── */
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('stuck', window.scrollY > 60);
+    }, { passive: true });
+
+    /* ── Scroll reveal ───────────────────────────────────────────── */
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
       });
-    }, { threshold: 0.1, rootMargin: '0px 0px -32px 0px' });
-    els.forEach(el => io.observe(el));
-  } else {
-    els.forEach(el => el.classList.add('in'));
-  }
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
-  /* Form */
-  const form    = document.getElementById('contactForm');
-  const success = document.getElementById('formSuccess');
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const required = [document.getElementById('cName'), document.getElementById('cEmail'), document.getElementById('cMessage')];
-    let ok = true;
-    required.forEach(f => {
-      if (!f.value.trim()) {
-        f.style.borderColor = 'var(--rose)';
-        f.addEventListener('input', () => { f.style.borderColor = ''; }, { once: true });
-        ok = false;
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    /* ── Contact form ────────────────────────────────────────────── */
+    const form      = document.getElementById('contact-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const status    = document.getElementById('f-status');
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+      status.className = 'f-status';
+
+      try {
+        await emailjs.send(
+          'YOUR_SERVICE_ID',   // ← replace YOUR_SERVICE_ID
+          'YOUR_TEMPLATE_ID',  // ← replace YOUR_TEMPLATE_ID
+          {
+            name:     document.getElementById('f-name').value,
+            business: document.getElementById('f-biz').value,
+            email:    document.getElementById('f-email').value,
+            message:  document.getElementById('f-msg').value,
+          }
+        );
+        status.className = 'f-status ok';
+        status.textContent = 'Message sent. I\'ll be in touch within a day.';
+        form.reset();
+      } catch (err) {
+        status.className = 'f-status err';
+        status.textContent = 'Something went wrong — email me directly at alex@bruskin.studio';
+        console.error(err);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Send message <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8h12M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
       }
     });
-    if (!ok) return;
-    const s = form.querySelector('.btn-send');
-    s.textContent = 'Sending…'; s.disabled = true;
-    emailjs.sendForm('service_mmb31o6', 'template_bsxgjs9', form)
-      .then(() => {
-        form.style.display = 'none';
-        success.style.display = 'block';
-      })
-      .catch(() => {
-        s.textContent = 'Something went wrong — try emailing me directly.';
-        s.disabled = false;
-      });
-  });
+  </script>
 
-})();
-</script>
 </body>
 </html>
