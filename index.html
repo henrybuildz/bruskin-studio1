@@ -5,45 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bruskin Studio — Web Design for Vienna Businesses</title>
   <meta name="description" content="Vienna-based web design studio for restaurants, cafes, and local businesses. Custom sites in 1–2 weeks at pricing that makes sense.">
-  <meta property="og:title" content="Bruskin Studio — Web Design Vienna">
-  <meta property="og:description" content="Custom websites for Vienna restaurants and local businesses. Fast, affordable, and actually good.">
-  <meta property="og:type" content="website">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
   <style>
-    /* ─── DESIGN SYSTEM ─────────────────────────────────────────── */
+    /* ── TOKENS ──────────────────────────────────────────────────── */
     :root {
-      --bg:          #08080A;
-      --bg-raised:   #0F0F13;
-      --bg-card:     #121215;
-      --fg:          #F0EBE4;
-      --fg-muted:    #7C7874;
-      --fg-dim:      #35322F;
-      --accent:      #C9A96E;
-      --accent-hi:   #DFBF85;
-      --border:      rgba(240,235,228,0.07);
-      --border-hi:   rgba(201,169,110,0.25);
-
-      --serif:  'Cormorant', Georgia, serif;
-      --sans:   'Syne', system-ui, sans-serif;
-
-      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-      --nav-h: 68px;
+      --bg:          #FFFCF9;
+      --surface:     #FFFFFF;
+      --surface-2:   #FFF8F4;
+      --fg:          #1C1917;
+      --fg-muted:    #78716C;
+      --fg-light:    #A8A29E;
+      --accent:      #C25A35;
+      --accent-bg:   #FFF1EC;
+      --border:      rgba(28, 25, 23, 0.09);
+      --shadow-sm:   0 1px 4px rgba(28,25,23,.06), 0 4px 16px rgba(28,25,23,.06);
+      --shadow-md:   0 2px 8px rgba(28,25,23,.05), 0 8px 32px rgba(28,25,23,.08);
+      --r:           14px;
+      --r-lg:        22px;
+      --r-pill:      9999px;
+      --sans:        'Plus Jakarta Sans', system-ui, sans-serif;
+      --nav-h:       66px;
+      --ease:        cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* ─── RESET ─────────────────────────────────────────────────── */
+    /* ── RESET ───────────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html {
-      font-size: 16px;
-      scroll-behavior: smooth;
-      cursor: none;
-    }
+    html { font-size: 16px; scroll-behavior: smooth; }
 
     body {
       background: var(--bg);
@@ -54,53 +48,57 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Grain overlay */
-    body::after {
-      content: '';
+    a    { color: inherit; text-decoration: none; }
+    img  { display: block; max-width: 100%; }
+    button { border: none; background: none; font-family: inherit; color: inherit; cursor: pointer; }
+
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    /* ── GRADIENT BACKDROP ───────────────────────────────────────── */
+    .blob-wrap {
       position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: 9000;
-      opacity: 0.35;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
-      background-size: 200px 200px;
-    }
-
-    a    { color: inherit; text-decoration: none; }
-    img  { display: block; max-width: 100%; }
-    button { cursor: none; border: none; background: none; font-family: inherit; color: inherit; }
-
-    .sr-only {
-      position: absolute;
-      width: 1px; height: 1px;
-      padding: 0; margin: -1px;
+      z-index: 0;
       overflow: hidden;
-      clip: rect(0,0,0,0);
-      white-space: nowrap;
-      border: 0;
     }
 
-    /* ─── CURSOR ─────────────────────────────────────────────────── */
-    #cursor {
-      width: 10px; height: 10px;
-      background: var(--accent);
+    .blob {
+      position: absolute;
       border-radius: 50%;
-      position: fixed;
-      top: 0; left: 0;
-      transform: translate(-50%,-50%);
-      pointer-events: none;
-      z-index: 9999;
-      transition: width .3s var(--ease-out), height .3s var(--ease-out),
-                  background .3s, border .3s;
+      filter: blur(80px);
     }
 
-    #cursor.grow {
-      width: 44px; height: 44px;
-      background: transparent;
-      border: 1px solid var(--accent);
+    .blob-1 {
+      width: 680px; height: 680px;
+      top: -160px; left: -140px;
+      background: radial-gradient(circle, rgba(255,195,165,.55) 0%, transparent 70%);
     }
 
-    /* ─── NAV ────────────────────────────────────────────────────── */
+    .blob-2 {
+      width: 560px; height: 560px;
+      top: -80px; right: -100px;
+      background: radial-gradient(circle, rgba(210,195,255,.38) 0%, transparent 70%);
+    }
+
+    .blob-3 {
+      width: 500px; height: 500px;
+      bottom: 10%; left: 50%;
+      transform: translateX(-50%);
+      background: radial-gradient(circle, rgba(255,210,185,.35) 0%, transparent 70%);
+    }
+
+    .blob-4 {
+      width: 400px; height: 400px;
+      bottom: 5%; right: -80px;
+      background: radial-gradient(circle, rgba(255,175,145,.22) 0%, transparent 70%);
+    }
+
+    /* ── NAV ─────────────────────────────────────────────────────── */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -108,697 +106,674 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 clamp(1.5rem, 5vw, 4rem);
+      padding: 0 clamp(1.25rem, 5vw, 3.5rem);
       z-index: 100;
-      transition: background .4s var(--ease-out), backdrop-filter .4s;
+      transition: background .35s var(--ease), box-shadow .35s var(--ease);
     }
 
     nav.stuck {
-      background: rgba(8,8,10,.88);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border-bottom: 1px solid var(--border);
+      background: rgba(255,252,249,.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 1px 0 var(--border);
     }
 
     .nav-brand {
-      font-family: var(--sans);
-      font-size: .7rem;
+      font-size: .85rem;
       font-weight: 700;
-      letter-spacing: .22em;
-      text-transform: uppercase;
+      letter-spacing: -.01em;
+      color: var(--fg);
     }
 
     .nav-links {
       display: flex;
-      gap: 2.5rem;
+      align-items: center;
+      gap: 2rem;
       list-style: none;
     }
 
     .nav-links a {
-      font-size: .65rem;
+      font-size: .85rem;
       font-weight: 500;
-      letter-spacing: .18em;
-      text-transform: uppercase;
       color: var(--fg-muted);
-      transition: color .2s;
+      transition: color .18s;
     }
     .nav-links a:hover { color: var(--fg); }
 
-    /* ─── HERO ───────────────────────────────────────────────────── */
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .55rem 1.25rem;
+      background: var(--fg);
+      color: #fff;
+      border-radius: var(--r-pill);
+      font-size: .82rem;
+      font-weight: 600;
+      letter-spacing: -.01em;
+      transition: background .18s, transform .18s;
+    }
+    .nav-cta:hover { background: #2D2926; transform: translateY(-1px); }
+
+    /* mobile nav toggle */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      padding: 6px;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 22px; height: 2px;
+      background: var(--fg);
+      border-radius: 2px;
+      transition: transform .25s, opacity .25s;
+    }
+
+    /* ── LAYOUT WRAPPER ──────────────────────────────────────────── */
+    .wrap {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── HERO ────────────────────────────────────────────────────── */
     .hero {
       min-height: 100dvh;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
-      padding: 0 clamp(1.5rem, 5vw, 4rem) clamp(3.5rem, 8vh, 5.5rem);
-      position: relative;
-      overflow: hidden;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: calc(var(--nav-h) + 4rem) clamp(1.25rem, 5vw, 3.5rem) 5rem;
     }
 
-    /* Large decorative ring */
-    .hero-ring {
-      position: absolute;
-      top: 8%;
-      right: -8%;
-      width: min(55vw, 640px);
-      height: min(55vw, 640px);
-      border-radius: 50%;
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .4rem 1rem;
+      background: var(--surface);
       border: 1px solid var(--border);
-      pointer-events: none;
-    }
-
-    /* Second ring — offset for depth */
-    .hero-ring-2 {
-      position: absolute;
-      top: 18%;
-      right: 4%;
-      width: min(30vw, 320px);
-      height: min(30vw, 320px);
-      border-radius: 50%;
-      border: 1px solid rgba(201,169,110,.08);
-      pointer-events: none;
-    }
-
-    .hero-kicker {
-      font-size: .65rem;
+      border-radius: var(--r-pill);
+      font-size: .78rem;
       font-weight: 600;
-      letter-spacing: .28em;
-      text-transform: uppercase;
-      color: var(--accent);
+      color: var(--fg-muted);
       margin-bottom: 2.5rem;
+      box-shadow: var(--shadow-sm);
       opacity: 0;
-      transform: translateY(16px);
-      animation: up .7s var(--ease-out) .15s forwards;
+      transform: translateY(14px);
+      animation: up .65s var(--ease) .1s forwards;
+    }
+
+    .hero-badge-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
     }
 
     .hero-title {
-      font-family: var(--serif);
-      font-size: clamp(3.5rem, 10vw, 9.5rem);
-      font-weight: 300;
-      line-height: .93;
-      letter-spacing: -.025em;
-      margin-bottom: 3rem;
-    }
-
-    .hero-title .line {
-      display: block;
-      overflow: hidden;
-    }
-
-    .hero-title .line-inner {
-      display: block;
-      opacity: 0;
-      transform: translateY(100%);
-    }
-
-    .hero-title .line:nth-child(1) .line-inner { animation: slideUp .85s var(--ease-out) .3s forwards; }
-    .hero-title .line:nth-child(2) .line-inner {
-      animation: slideUp .85s var(--ease-out) .42s forwards;
-      font-style: italic;
-      color: var(--fg-muted);
-    }
-    .hero-title .line:nth-child(3) .line-inner { animation: slideUp .85s var(--ease-out) .54s forwards; }
-
-    .hero-foot {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 2rem;
-      flex-wrap: wrap;
+      font-size: clamp(2.6rem, 6.5vw, 5.4rem);
+      font-weight: 800;
+      line-height: 1.07;
+      letter-spacing: -.035em;
+      color: var(--fg);
+      max-width: 840px;
+      margin: 0 auto 1.75rem;
       opacity: 0;
       transform: translateY(20px);
-      animation: up .8s var(--ease-out) .85s forwards;
+      animation: up .75s var(--ease) .2s forwards;
     }
 
-    .hero-tagline {
-      font-family: var(--serif);
-      font-size: clamp(1rem, 2vw, 1.3rem);
-      font-style: italic;
-      color: var(--fg-muted);
-      max-width: 420px;
-      line-height: 1.5;
-    }
-
-    .btn-outline {
-      display: inline-flex;
-      align-items: center;
-      gap: .75rem;
-      padding: .9rem 1.9rem;
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      font-family: var(--sans);
-      font-size: .65rem;
-      font-weight: 700;
-      letter-spacing: .2em;
-      text-transform: uppercase;
-      white-space: nowrap;
-      transition: background .22s var(--ease-out), color .22s, transform .2s;
-    }
-
-    .btn-outline:hover {
-      background: var(--accent);
-      color: var(--bg);
-      transform: translateY(-2px);
-    }
-
-    .btn-outline svg { transition: transform .2s; }
-    .btn-outline:hover svg { transform: translateX(4px); }
-
-    /* scroll cue */
-    .scroll-cue {
-      position: absolute;
-      bottom: clamp(3.5rem, 8vh, 5.5rem);
-      right: clamp(1.5rem, 5vw, 4rem);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: .5rem;
-      opacity: 0;
-      animation: fadeIn .8s var(--ease-out) 1.2s forwards;
-    }
-
-    .scroll-cue-label {
-      font-size: .55rem;
-      font-weight: 600;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      color: var(--fg-dim);
-      writing-mode: vertical-rl;
-    }
-
-    .scroll-cue-line {
-      width: 1px;
-      height: 56px;
-      background: linear-gradient(to bottom, var(--fg-dim), transparent);
-      animation: pulse 2.2s ease-in-out infinite;
-    }
-
-    /* ─── SHARED SECTION CHROME ──────────────────────────────────── */
-    .section-header {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 4rem;
-    }
-
-    .section-num {
-      font-size: .6rem;
-      font-weight: 700;
-      letter-spacing: .2em;
-      color: var(--accent);
-    }
-
-    .section-rule { flex: 1; height: 1px; background: var(--border); }
-
-    .section-label-text {
-      font-size: .6rem;
-      font-weight: 500;
-      letter-spacing: .2em;
-      text-transform: uppercase;
+    .hero-title em {
+      font-style: normal;
       color: var(--fg-muted);
     }
 
-    /* shared section padding */
-    .section { padding: clamp(5rem, 11vh, 8rem) clamp(1.5rem, 5vw, 4rem); }
-
-    /* ─── SERVICES ───────────────────────────────────────────────── */
-    .services-layout {
-      display: grid;
-      grid-template-columns: 1fr 1.1fr;
-      gap: clamp(3rem, 6vw, 5rem);
-      align-items: start;
-    }
-
-    .services-hed {
-      font-family: var(--serif);
-      font-size: clamp(2.2rem, 4.5vw, 4rem);
-      font-weight: 300;
-      line-height: 1.1;
-      letter-spacing: -.02em;
-      margin-bottom: 2rem;
-    }
-
-    .services-hed em { font-style: italic; color: var(--fg-muted); }
-
-    .services-blurb {
-      font-family: var(--serif);
-      font-size: 1.05rem;
-      font-style: italic;
-      color: var(--fg-muted);
-      line-height: 1.7;
-      padding: 1.5rem;
-      border: 1px solid var(--border);
-      border-left: 2px solid var(--accent);
-      background: var(--bg-raised);
-    }
-
-    .service-list { list-style: none; }
-
-    .service-row {
-      display: grid;
-      grid-template-columns: 2rem 1fr 1.5rem;
-      align-items: center;
-      gap: 1.25rem;
-      padding: 1.6rem 0;
-      border-bottom: 1px solid var(--border);
-      transition: padding-left .3s var(--ease-out);
-    }
-
-    .service-row:first-child { border-top: 1px solid var(--border); }
-    .service-row:hover { padding-left: .6rem; }
-
-    .srv-n {
-      font-size: .58rem;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: .1em;
-    }
-
-    .srv-name {
-      font-family: var(--serif);
-      font-size: clamp(1rem, 1.8vw, 1.3rem);
+    .hero-sub {
+      font-size: clamp(.95rem, 2vw, 1.15rem);
       font-weight: 400;
-    }
-
-    .srv-arrow {
-      color: var(--fg-dim);
-      transition: color .2s, transform .2s;
-    }
-
-    .service-row:hover .srv-arrow {
-      color: var(--accent);
-      transform: translateX(4px);
-    }
-
-    /* ─── PORTFOLIO ──────────────────────────────────────────────── */
-    .port-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: clamp(220px, 28vw, 340px) clamp(200px, 24vw, 300px);
-      gap: 1.25rem;
-    }
-
-    .port-card:nth-child(1) { grid-column: 1 / 3; grid-row: 1; }
-    .port-card:nth-child(2) { grid-column: 3;     grid-row: 1; }
-    .port-card:nth-child(3) { grid-column: 1;     grid-row: 2; }
-    .port-card:nth-child(4) { grid-column: 2 / 4; grid-row: 2; }
-
-    .port-card {
-      position: relative;
-      overflow: hidden;
-      background: var(--bg-card);
-    }
-
-    .card-art {
-      position: absolute;
-      inset: 0;
-      transition: transform .65s var(--ease-out);
-    }
-
-    .port-card:hover .card-art { transform: scale(1.06); }
-
-    /* Distinct gradient painting per card */
-    .port-card:nth-child(1) .card-art {
-      background:
-        radial-gradient(ellipse at 25% 65%, rgba(201,130,60,.18) 0%, transparent 55%),
-        radial-gradient(ellipse at 75% 20%, rgba(180,100,30,.08) 0%, transparent 50%),
-        linear-gradient(145deg, #14100A 0%, #1E1509 55%, #0A0705 100%);
-    }
-
-    .port-card:nth-child(2) .card-art {
-      background:
-        radial-gradient(ellipse at 60% 40%, rgba(200,50,50,.18) 0%, transparent 55%),
-        radial-gradient(ellipse at 20% 80%, rgba(120,20,20,.1) 0%, transparent 50%),
-        linear-gradient(155deg, #100808 0%, #1C0C0C 55%, #060303 100%);
-    }
-
-    .port-card:nth-child(3) .card-art {
-      background:
-        radial-gradient(ellipse at 50% 30%, rgba(60,90,160,.2) 0%, transparent 55%),
-        radial-gradient(ellipse at 80% 75%, rgba(30,50,120,.1) 0%, transparent 50%),
-        linear-gradient(140deg, #080C14 0%, #0C1020 55%, #04060C 100%);
-    }
-
-    .port-card:nth-child(4) .card-art {
-      background:
-        radial-gradient(ellipse at 35% 60%, rgba(40,130,110,.18) 0%, transparent 55%),
-        radial-gradient(ellipse at 75% 25%, rgba(20,90,80,.09) 0%, transparent 50%),
-        linear-gradient(150deg, #060E0D 0%, #0B1614 55%, #030806 100%);
-    }
-
-    .card-veil {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top,
-        rgba(8,8,10,.96) 0%,
-        rgba(8,8,10,.3) 55%,
-        transparent 100%);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 1.75rem;
-    }
-
-    .card-tag {
-      font-size: .58rem;
-      font-weight: 600;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: .45rem;
-      transform: translateY(6px);
-      opacity: .6;
-      transition: transform .3s var(--ease-out), opacity .3s;
-    }
-
-    .port-card:hover .card-tag { transform: translateY(0); opacity: 1; }
-
-    .card-name {
-      font-family: var(--serif);
-      font-size: clamp(1.1rem, 2vw, 1.65rem);
-      font-weight: 400;
-      line-height: 1.2;
-      transform: translateY(6px);
-      transition: transform .35s var(--ease-out) .04s;
-    }
-
-    .port-card:hover .card-name { transform: translateY(0); }
-
-    .card-detail {
-      font-size: .6rem;
-      font-weight: 500;
-      letter-spacing: .12em;
-      text-transform: uppercase;
       color: var(--fg-muted);
-      margin-top: .35rem;
-      transform: translateY(10px);
+      max-width: 480px;
+      margin: 0 auto 2.75rem;
+      line-height: 1.65;
       opacity: 0;
-      transition: transform .35s var(--ease-out) .09s, opacity .35s .09s;
+      transform: translateY(16px);
+      animation: up .75s var(--ease) .32s forwards;
     }
 
-    .port-card:hover .card-detail { transform: translateY(0); opacity: 1; }
-
-    /* corner icon */
-    .card-corner {
-      position: absolute;
-      top: 1.25rem; right: 1.25rem;
-      width: 36px; height: 36px;
-      border: 1px solid rgba(240,235,228,.12);
-      border-radius: 50%;
+    .hero-actions {
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--fg-muted);
-      transform: scale(0);
+      gap: .875rem;
+      flex-wrap: wrap;
       opacity: 0;
-      transition: transform .38s var(--ease-out), opacity .38s;
+      transform: translateY(14px);
+      animation: up .75s var(--ease) .44s forwards;
     }
 
-    .port-card:hover .card-corner { transform: scale(1); opacity: 1; }
-
-    /* ─── ABOUT ──────────────────────────────────────────────────── */
-    #about { background: var(--bg-raised); border-top: 1px solid var(--border); }
-
-    .about-layout {
-      display: grid;
-      grid-template-columns: 1fr 1.4fr;
-      gap: clamp(3rem, 7vw, 6rem);
-      align-items: start;
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      padding: .85rem 1.9rem;
+      background: var(--fg);
+      color: #fff;
+      border-radius: var(--r-pill);
+      font-size: .95rem;
+      font-weight: 700;
+      letter-spacing: -.015em;
+      transition: background .18s, transform .18s, box-shadow .18s;
+      box-shadow: 0 2px 12px rgba(28,25,23,.18);
     }
-
-    .about-sticky {
-      position: sticky;
-      top: calc(var(--nav-h) + 2rem);
+    .btn-primary:hover {
+      background: #2D2926;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(28,25,23,.22);
     }
+    .btn-primary svg { transition: transform .18s; }
+    .btn-primary:hover svg { transform: translateX(3px); }
 
-    .about-hed {
-      font-family: var(--serif);
-      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
-      font-weight: 300;
-      line-height: 1.1;
-      letter-spacing: -.02em;
-    }
-
-    .about-hed em { display: block; font-style: italic; color: var(--fg-muted); }
-
-    .about-stats {
-      margin-top: 3rem;
-      padding-top: 2rem;
-      border-top: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      gap: 1.75rem;
-    }
-
-    .stat-val {
-      font-family: var(--serif);
-      font-size: 2.8rem;
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      padding: .85rem 1.75rem;
+      background: var(--surface);
+      color: var(--fg);
+      border-radius: var(--r-pill);
+      font-size: .95rem;
       font-weight: 600;
+      letter-spacing: -.015em;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .18s, transform .18s;
+    }
+    .btn-secondary:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
+    }
+
+    /* hero trust bar */
+    .hero-trust {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 3.5rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeIn .8s var(--ease) .75s forwards;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      font-size: .82rem;
+      font-weight: 500;
+      color: var(--fg-muted);
+    }
+
+    .trust-item svg { color: var(--accent); flex-shrink: 0; }
+
+    .trust-divider {
+      width: 1px; height: 18px;
+      background: var(--border);
+    }
+
+    /* ── SECTION SHARED ──────────────────────────────────────────── */
+    .section { padding: clamp(4.5rem, 10vh, 7rem) clamp(1.25rem, 5vw, 3.5rem); }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .35rem .9rem;
+      background: var(--accent-bg);
+      border-radius: var(--r-pill);
+      font-size: .75rem;
+      font-weight: 700;
       color: var(--accent);
+      letter-spacing: .01em;
+      margin-bottom: 1.25rem;
+    }
+
+    .section-hed {
+      font-size: clamp(1.9rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -.03em;
+      line-height: 1.1;
+      color: var(--fg);
+      margin-bottom: .9rem;
+    }
+
+    .section-sub {
+      font-size: 1.05rem;
+      color: var(--fg-muted);
+      max-width: 480px;
+      line-height: 1.65;
+    }
+
+    /* ── SERVICES ────────────────────────────────────────────────── */
+    #services { background: var(--surface-2); }
+
+    .services-top {
+      max-width: 640px;
+      margin-bottom: 3.5rem;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .service-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 2rem 1.75rem;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .25s var(--ease), transform .25s var(--ease);
+    }
+
+    .service-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-3px);
+    }
+
+    .srv-icon {
+      width: 44px; height: 44px;
+      background: var(--accent-bg);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      color: var(--accent);
+    }
+
+    .srv-title {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      margin-bottom: .5rem;
+      color: var(--fg);
+    }
+
+    .srv-desc {
+      font-size: .875rem;
+      color: var(--fg-muted);
+      line-height: 1.6;
+    }
+
+    /* ── PORTFOLIO ───────────────────────────────────────────────── */
+    .port-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    .port-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .28s var(--ease), transform .28s var(--ease);
+    }
+
+    .port-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-4px);
+    }
+
+    .port-thumb {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .port-card:first-child .port-thumb { height: 260px; }
+
+    .port-thumb-inner {
+      position: absolute;
+      inset: 0;
+      transition: transform .55s var(--ease);
+    }
+
+    .port-card:hover .port-thumb-inner { transform: scale(1.04); }
+
+    /* Distinct warm gradient per project */
+    .port-card:nth-child(1) .port-thumb-inner {
+      background:
+        radial-gradient(ellipse at 30% 60%, rgba(210,130,80,.45) 0%, transparent 55%),
+        radial-gradient(ellipse at 75% 20%, rgba(240,180,100,.3) 0%, transparent 50%),
+        linear-gradient(140deg, #F5E6D0 0%, #EDD4AA 60%, #E8C88A 100%);
+    }
+
+    .port-card:nth-child(2) .port-thumb-inner {
+      background:
+        radial-gradient(ellipse at 60% 40%, rgba(220,80,60,.35) 0%, transparent 55%),
+        radial-gradient(ellipse at 20% 75%, rgba(200,60,50,.2) 0%, transparent 50%),
+        linear-gradient(150deg, #F5CFCA 0%, #EDB8AF 60%, #E8A090 100%);
+    }
+
+    .port-card:nth-child(3) .port-thumb-inner {
+      background:
+        radial-gradient(ellipse at 45% 35%, rgba(80,100,200,.3) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 70%, rgba(60,80,180,.2) 0%, transparent 50%),
+        linear-gradient(145deg, #D0D8F5 0%, #B8C3ED 60%, #A0ADDD 100%);
+    }
+
+    .port-card:nth-child(4) .port-thumb-inner {
+      background:
+        radial-gradient(ellipse at 35% 55%, rgba(50,160,130,.35) 0%, transparent 55%),
+        radial-gradient(ellipse at 75% 25%, rgba(40,140,110,.2) 0%, transparent 50%),
+        linear-gradient(148deg, #CCEEE5 0%, #A8DDD0 60%, #88CCBC 100%);
+    }
+
+    /* floating label inside thumb */
+    .port-label {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .35rem .85rem;
+      background: rgba(255,255,255,.82);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: var(--r-pill);
+      font-size: .72rem;
+      font-weight: 700;
+      color: var(--fg);
+      border: 1px solid rgba(255,255,255,.6);
+    }
+
+    .port-body {
+      padding: 1.5rem 1.75rem 1.75rem;
+    }
+
+    .port-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      margin-bottom: .35rem;
+    }
+
+    .port-meta {
+      font-size: .82rem;
+      color: var(--fg-muted);
+      font-weight: 500;
+    }
+
+    /* ── ABOUT ───────────────────────────────────────────────────── */
+    #about { background: var(--surface-2); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 5rem);
+      align-items: center;
+    }
+
+    .about-text {}
+
+    .about-body {
+      font-size: 1.05rem;
+      color: var(--fg-muted);
+      line-height: 1.75;
+    }
+    .about-body p + p { margin-top: 1.1em; }
+    .about-body strong { color: var(--fg); font-weight: 600; }
+
+    .about-stats-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .stat {}
+
+    .stat-num {
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: -.04em;
+      color: var(--fg);
       line-height: 1;
     }
 
-    .stat-lbl {
-      font-size: .6rem;
+    .stat-num span { color: var(--accent); }
+
+    .stat-label {
+      font-size: .8rem;
       font-weight: 600;
-      letter-spacing: .18em;
-      text-transform: uppercase;
       color: var(--fg-muted);
-      margin-top: .3rem;
+      margin-top: .35rem;
     }
 
-    .about-body {
-      padding-top: .25rem;
+    .stat-divider {
+      grid-column: 1 / -1;
+      height: 1px;
+      background: var(--border);
     }
 
-    .about-body p {
-      font-family: var(--serif);
-      font-size: clamp(1.05rem, 1.6vw, 1.2rem);
-      font-weight: 400;
-      line-height: 1.8;
+    .about-quote {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      font-size: .95rem;
       color: var(--fg-muted);
+      font-style: italic;
+      line-height: 1.65;
     }
 
-    .about-body p + p { margin-top: 1.4em; }
-    .about-body strong { color: var(--fg); font-weight: 500; }
-
-    /* ─── CONTACT ────────────────────────────────────────────────── */
-    #contact { background: var(--bg); border-top: 1px solid var(--border); }
-
-    .contact-layout {
+    /* ── CONTACT ─────────────────────────────────────────────────── */
+    .contact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
       display: grid;
       grid-template-columns: 1fr 1.1fr;
-      gap: clamp(3rem, 7vw, 6rem);
-      align-items: start;
+    }
+
+    .contact-left {
+      padding: clamp(2rem, 4vw, 3.5rem);
+      background: var(--surface-2);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .contact-hed {
-      font-family: var(--serif);
-      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
-      font-weight: 300;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -.035em;
       line-height: 1.1;
-      letter-spacing: -.02em;
-      margin-bottom: 1.5rem;
+      margin-bottom: .9rem;
     }
-
-    .contact-hed em { font-style: italic; color: var(--fg-muted); }
 
     .contact-sub {
-      font-family: var(--serif);
-      font-style: italic;
-      font-size: 1.05rem;
-      color: var(--fg-muted);
-      line-height: 1.65;
-      margin-bottom: 2.5rem;
-    }
-
-    .contact-meta { display: flex; flex-direction: column; gap: .9rem; }
-
-    .meta-row { display: flex; align-items: baseline; gap: 1rem; }
-
-    .meta-key {
-      font-size: .58rem;
-      font-weight: 700;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: var(--fg-dim);
-      min-width: 52px;
-    }
-
-    .meta-val {
-      font-family: var(--serif);
       font-size: 1rem;
       color: var(--fg-muted);
+      line-height: 1.65;
+      margin-bottom: 2rem;
     }
 
-    /* form */
-    form { display: flex; flex-direction: column; gap: 1.4rem; }
+    .contact-meta { display: flex; flex-direction: column; gap: .75rem; }
 
-    .form-row-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      font-size: .875rem;
     }
 
-    .f-group { display: flex; flex-direction: column; gap: .45rem; }
+    .contact-row-icon {
+      width: 32px; height: 32px;
+      background: var(--accent-bg);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .contact-row-text { font-weight: 500; color: var(--fg-muted); }
+
+    .contact-right { padding: clamp(2rem, 4vw, 3.5rem); }
+
+    /* Form */
+    form { display: flex; flex-direction: column; gap: 1.1rem; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: .875rem; }
+
+    .f-group { display: flex; flex-direction: column; gap: .4rem; }
 
     .f-group label {
-      font-size: .58rem;
-      font-weight: 700;
-      letter-spacing: .18em;
-      text-transform: uppercase;
+      font-size: .78rem;
+      font-weight: 600;
       color: var(--fg-muted);
     }
 
     .f-group input,
     .f-group textarea {
-      background: var(--bg-raised);
-      border: 1px solid var(--border);
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
       color: var(--fg);
-      font-family: var(--serif);
-      font-size: 1rem;
-      padding: .85rem 1rem;
+      font-family: var(--sans);
+      font-size: .95rem;
+      padding: .75rem 1rem;
       outline: none;
-      transition: border-color .2s;
       width: 100%;
       resize: none;
+      transition: border-color .18s, box-shadow .18s;
       -webkit-appearance: none;
     }
 
     .f-group input:focus,
-    .f-group textarea:focus { border-color: var(--border-hi); }
+    .f-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(194,90,53,.1);
+    }
 
     .f-group input::placeholder,
     .f-group textarea::placeholder {
-      color: var(--fg-dim);
-      font-style: italic;
+      color: var(--fg-light);
     }
-
-    .btn-solid {
-      display: inline-flex;
-      align-items: center;
-      gap: .75rem;
-      padding: 1rem 2.2rem;
-      background: var(--accent);
-      color: var(--bg);
-      font-family: var(--sans);
-      font-size: .65rem;
-      font-weight: 700;
-      letter-spacing: .2em;
-      text-transform: uppercase;
-      align-self: flex-start;
-      transition: background .22s var(--ease-out), transform .2s;
-    }
-
-    .btn-solid:hover { background: var(--accent-hi); transform: translateY(-2px); }
-    .btn-solid:disabled { opacity: .45; pointer-events: none; }
 
     .f-status {
-      font-family: var(--serif);
-      font-style: italic;
-      font-size: .95rem;
-      padding: .8rem 1rem;
+      font-size: .9rem;
+      padding: .75rem 1rem;
+      border-radius: 10px;
       display: none;
     }
 
-    .f-status.ok  { display:block; color:#74C98A; background:rgba(116,201,138,.06); border:1px solid rgba(116,201,138,.18); }
-    .f-status.err { display:block; color:#D97070; background:rgba(217,112,112,.06); border:1px solid rgba(217,112,112,.18); }
+    .f-status.ok  { display:block; color:#4B8C5E; background:#EEF7F2; border:1px solid #C3E0CE; }
+    .f-status.err { display:block; color:#9B4040; background:#FBF0F0; border:1px solid #E8C4C4; }
 
-    /* ─── FOOTER ─────────────────────────────────────────────────── */
+    /* ── FOOTER ──────────────────────────────────────────────────── */
     footer {
-      padding: 1.75rem clamp(1.5rem, 5vw, 4rem);
+      padding: 1.75rem clamp(1.25rem, 5vw, 3.5rem);
       border-top: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 1rem;
+      position: relative;
+      z-index: 1;
     }
 
-    .ft-copy {
-      font-size: .6rem;
-      font-weight: 600;
-      letter-spacing: .15em;
-      text-transform: uppercase;
-      color: var(--fg-dim);
-    }
+    .ft-brand { font-size: .85rem; font-weight: 700; color: var(--fg); }
 
     .ft-loc {
-      font-family: var(--serif);
-      font-style: italic;
-      font-size: .95rem;
+      font-size: .82rem;
+      font-weight: 500;
       color: var(--fg-muted);
     }
 
-    /* ─── SCROLL REVEAL ──────────────────────────────────────────── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity .85s var(--ease-out), transform .85s var(--ease-out);
+    .ft-copy {
+      font-size: .78rem;
+      color: var(--fg-light);
     }
 
-    .reveal.in { opacity: 1; transform: translateY(0); }
+    /* ── REVEAL ──────────────────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .8s var(--ease), transform .8s var(--ease);
+    }
+    .reveal.in { opacity: 1; transform: none; }
+    .d1 { transition-delay: .08s; }
+    .d2 { transition-delay: .16s; }
+    .d3 { transition-delay: .24s; }
+    .d4 { transition-delay: .32s; }
+    .d5 { transition-delay: .1s; }
 
-    .d1 { transition-delay: .1s; }
-    .d2 { transition-delay: .2s; }
-    .d3 { transition-delay: .3s; }
+    /* ── KEYFRAMES ───────────────────────────────────────────────── */
+    @keyframes up     { to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeIn { to { opacity:1; } }
 
-    /* ─── KEYFRAMES ──────────────────────────────────────────────── */
-    @keyframes up      { to { opacity:1; transform:translateY(0); } }
-    @keyframes slideUp { to { opacity:1; transform:translateY(0); } }
-    @keyframes fadeIn  { to { opacity:.65; } }
-    @keyframes pulse   { 0%,100%{opacity:.25} 50%{opacity:1} }
-
-    /* ─── RESPONSIVE ─────────────────────────────────────────────── */
+    /* ── RESPONSIVE ──────────────────────────────────────────────── */
     @media (max-width: 900px) {
-      .services-layout { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
     }
 
     @media (max-width: 768px) {
-      html { cursor: auto; }
-      #cursor { display: none; }
+      .nav-links, .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
 
-      .nav-links { display: none; }
+      .hero-trust { gap: 1rem; }
+      .trust-divider { display: none; }
 
-      .hero-foot { flex-direction: column; align-items: flex-start; }
+      .port-grid { grid-template-columns: 1fr; }
+      .port-card:first-child .port-thumb { height: 200px; }
 
-      .port-grid {
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: repeat(2, clamp(180px,40vw,260px));
-      }
+      .about-grid { grid-template-columns: 1fr; }
 
-      .port-card:nth-child(1) { grid-column:1/3; grid-row:1; }
-      .port-card:nth-child(2) { grid-column:1;   grid-row:2; }
-      .port-card:nth-child(3) { grid-column:2;   grid-row:2; }
-      .port-card:nth-child(4) { display: none; }
-
-      .about-layout  { grid-template-columns: 1fr; }
-      .about-sticky  { position: static; }
-      .contact-layout { grid-template-columns: 1fr; }
-      .form-row-2 { grid-template-columns: 1fr; }
+      .contact-card { grid-template-columns: 1fr; }
+      .contact-left { border-right: none; border-bottom: 1px solid var(--border); }
+      .form-row { grid-template-columns: 1fr; }
     }
 
-    @media (max-width: 480px) {
-      .port-grid {
-        grid-template-columns: 1fr;
-        grid-template-rows: repeat(3, clamp(200px,55vw,280px));
-      }
-      .port-card:nth-child(1) { grid-column:1; }
-      .port-card:nth-child(2) { grid-column:1; grid-row:2; }
-      .port-card:nth-child(3) { grid-column:1; grid-row:3; }
+    @media (max-width: 560px) {
+      .services-grid { grid-template-columns: 1fr; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: .01ms !important;
-        transition-duration: .01ms !important;
-      }
+      *, *::before, *::after { animation-duration:.01ms !important; transition-duration:.01ms !important; }
     }
   </style>
 </head>
 <body>
 
-  <div id="cursor" aria-hidden="true"></div>
+  <!-- Gradient blobs — fixed, behind everything -->
+  <div class="blob-wrap" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+  </div>
 
   <!-- NAV -->
   <nav id="nav" aria-label="Main navigation">
@@ -807,340 +782,391 @@
       <li><a href="#services">Services</a></li>
       <li><a href="#portfolio">Work</a></li>
       <li><a href="#about">About</a></li>
-      <li><a href="#contact">Contact</a></li>
     </ul>
+    <a href="#contact" class="nav-cta">
+      Get in touch
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M2 7h10M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+    <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero" aria-label="Introduction">
-    <div class="hero-ring" aria-hidden="true"></div>
-    <div class="hero-ring-2" aria-hidden="true"></div>
+  <div class="wrap">
 
-    <p class="hero-kicker">Vienna Web Design Studio</p>
-
-    <h1 class="hero-title">
-      <span class="line"><span class="line-inner">Vienna has</span></span>
-      <span class="line"><span class="line-inner">great restaurants.</span></span>
-      <span class="line"><span class="line-inner">Most don't have websites.</span></span>
-    </h1>
-
-    <div class="hero-foot">
-      <p class="hero-tagline">We build them. Custom design, live in 1–2 weeks, at pricing that makes sense for a small business.</p>
-      <a href="#contact" class="btn-outline">
-        Start a project
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M2 8h12M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
-    </div>
-
-    <div class="scroll-cue" aria-hidden="true">
-      <span class="scroll-cue-label">Scroll</span>
-      <div class="scroll-cue-line"></div>
-    </div>
-  </section>
-
-  <!-- SERVICES -->
-  <section id="services" class="section" aria-labelledby="services-hed">
-    <div class="section-header">
-      <span class="section-num">01</span>
-      <div class="section-rule"></div>
-      <span class="section-label-text">Services</span>
-    </div>
-
-    <div class="services-layout">
-      <div class="reveal">
-        <h2 class="services-hed" id="services-hed">
-          A website.<br>
-          <em>Done in a week.</em><br>
-          For real.
-        </h2>
-        <p class="services-blurb">
-          Most diners check online before walking in. A restaurant with no website doesn't exist to half the people who'd love it. That's the problem we fix.
-        </p>
+    <!-- HERO -->
+    <section class="hero" aria-label="Introduction">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        Vienna · Web Design Studio
       </div>
 
-      <ul class="service-list reveal d1" role="list">
-        <li class="service-row">
-          <span class="srv-n">01</span>
-          <span class="srv-name">Custom Web Design</span>
-          <svg class="srv-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-            <path d="M4 10h12M10 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </li>
-        <li class="service-row">
-          <span class="srv-n">02</span>
-          <span class="srv-name">Domain &amp; Hosting Setup</span>
-          <svg class="srv-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-            <path d="M4 10h12M10 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </li>
-        <li class="service-row">
-          <span class="srv-n">03</span>
-          <span class="srv-name">Mobile-First Development</span>
-          <svg class="srv-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-            <path d="M4 10h12M10 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </li>
-        <li class="service-row">
-          <span class="srv-n">04</span>
-          <span class="srv-name">Google Search Visibility</span>
-          <svg class="srv-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-            <path d="M4 10h12M10 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </li>
-        <li class="service-row">
-          <span class="srv-n">05</span>
-          <span class="srv-name">Ongoing Updates (optional)</span>
-          <svg class="srv-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-            <path d="M4 10h12M10 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </li>
-      </ul>
-    </div>
-  </section>
+      <h1 class="hero-title">
+        Vienna has great restaurants.<br>
+        <em>Most don't have websites.</em>
+      </h1>
 
-  <!-- PORTFOLIO -->
-  <section id="portfolio" class="section" aria-labelledby="portfolio-hed">
-    <div class="section-header">
-      <span class="section-num">02</span>
-      <div class="section-rule"></div>
-      <span class="section-label-text">Selected Work</span>
-    </div>
+      <p class="hero-sub">
+        We build them. Custom design, live in 1–2 weeks, at pricing that makes sense for a small business.
+      </p>
 
-    <h2 class="sr-only" id="portfolio-hed">Portfolio</h2>
-
-    <div class="port-grid">
-
-      <article class="port-card reveal">
-        <div class="card-art" role="img" aria-label="Green Door Bistro project"></div>
-        <div class="card-veil">
-          <p class="card-tag">Restaurant · Vienna</p>
-          <h3 class="card-name">Green Door Bistro</h3>
-          <p class="card-detail">Live in 6 days</p>
-        </div>
-        <div class="card-corner" aria-hidden="true">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M2 12L12 2M12 2H5M12 2v7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-      </article>
-
-      <article class="port-card reveal d1">
-        <div class="card-art" role="img" aria-label="Mr. Noodle project"></div>
-        <div class="card-veil">
-          <p class="card-tag">Asian Restaurant · Vienna</p>
-          <h3 class="card-name">Mr. Noodle</h3>
-          <p class="card-detail">Full redesign</p>
-        </div>
-        <div class="card-corner" aria-hidden="true">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M2 12L12 2M12 2H5M12 2v7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-      </article>
-
-      <article class="port-card reveal d2">
-        <div class="card-art" role="img" aria-label="ASPIC Vienna project"></div>
-        <div class="card-veil">
-          <p class="card-tag">Fine Dining · Vienna</p>
-          <h3 class="card-name">ASPIC Vienna</h3>
-          <p class="card-detail">New launch</p>
-        </div>
-        <div class="card-corner" aria-hidden="true">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M2 12L12 2M12 2H5M12 2v7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-      </article>
-
-      <article class="port-card reveal d3">
-        <div class="card-art" role="img" aria-label="Stella Marina project"></div>
-        <div class="card-veil">
-          <p class="card-tag">Seafood · Vienna</p>
-          <h3 class="card-name">Stella Marina</h3>
-          <p class="card-detail">Brand + web</p>
-        </div>
-        <div class="card-corner" aria-hidden="true">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M2 12L12 2M12 2H5M12 2v7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-      </article>
-
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="about" class="section" aria-labelledby="about-hed">
-    <div class="section-header">
-      <span class="section-num">03</span>
-      <div class="section-rule"></div>
-      <span class="section-label-text">About the Studio</span>
-    </div>
-
-    <div class="about-layout">
-      <div class="about-sticky reveal">
-        <h2 class="about-hed" id="about-hed">
-          One person.<br>
-          <em>One focus.</em>
-        </h2>
-        <div class="about-stats">
-          <div>
-            <div class="stat-val">1–2</div>
-            <div class="stat-lbl">Week turnaround</div>
-          </div>
-          <div>
-            <div class="stat-val">4</div>
-            <div class="stat-lbl">Vienna clients</div>
-          </div>
-          <div>
-            <div class="stat-val">100%</div>
-            <div class="stat-lbl">Local businesses</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="about-body reveal d1">
-        <p>
-          I'm a Vienna-based designer. My clients are mostly <strong>restaurants, cafes, and shops</strong> — places with regulars and no website. I build sites quickly, keep the process simple, and stay reachable after launch.
-        </p>
-        <p>
-          I use AI in my workflow. It's why I can turn a project around in a week at a price that makes sense for a small business — without cutting corners on the design.
-        </p>
-        <p>
-          No agencies, no middlemen. You work with me directly. If something needs changing six months from now, you reach me directly.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact" class="section" aria-labelledby="contact-hed">
-    <div class="section-header">
-      <span class="section-num">04</span>
-      <div class="section-rule"></div>
-      <span class="section-label-text">Get in touch</span>
-    </div>
-
-    <div class="contact-layout">
-      <div class="reveal">
-        <h2 class="contact-hed" id="contact-hed">
-          Let's talk about<br>
-          <em>your website.</em>
-        </h2>
-        <p class="contact-sub">Tell me a bit about your business. I'll get back to you within a day.</p>
-        <div class="contact-meta">
-          <div class="meta-row">
-            <span class="meta-key">Based</span>
-            <span class="meta-val">Vienna, Austria</span>
-          </div>
-          <div class="meta-row">
-            <span class="meta-key">Email</span>
-            <span class="meta-val">alex@bruskin.studio</span>
-          </div>
-        </div>
-      </div>
-
-      <form id="contact-form" class="reveal d1" novalidate aria-label="Contact form">
-        <div class="form-row-2">
-          <div class="f-group">
-            <label for="f-name">Your name <span aria-hidden="true">*</span></label>
-            <input type="text" id="f-name" name="name" placeholder="Maria Müller"
-                   required autocomplete="name">
-          </div>
-          <div class="f-group">
-            <label for="f-biz">Business name</label>
-            <input type="text" id="f-biz" name="business" placeholder="Café Schönbrunn"
-                   autocomplete="organization">
-          </div>
-        </div>
-        <div class="f-group">
-          <label for="f-email">Email address <span aria-hidden="true">*</span></label>
-          <input type="email" id="f-email" name="email" placeholder="maria@example.com"
-                 required autocomplete="email">
-        </div>
-        <div class="f-group">
-          <label for="f-msg">Tell me about your project <span aria-hidden="true">*</span></label>
-          <textarea id="f-msg" name="message" rows="5"
-                    placeholder="We're a small restaurant in the 7th district and we've been meaning to get a website for years..."
-                    required></textarea>
-        </div>
-        <button type="submit" class="btn-solid" id="submit-btn">
-          Send message
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">
+          Start a project
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <path d="M2 8h12M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 8h12M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-        </button>
-        <div class="f-status" id="f-status" role="status" aria-live="polite"></div>
-      </form>
-    </div>
-  </section>
+        </a>
+        <a href="#portfolio" class="btn-secondary">See our work</a>
+      </div>
 
-  <!-- FOOTER -->
-  <footer>
-    <span class="ft-copy">&copy; 2026 Bruskin Studio</span>
-    <span class="ft-loc">Designed in Vienna</span>
-    <span class="ft-copy">All rights reserved</span>
-  </footer>
+      <div class="hero-trust" aria-label="Key facts">
+        <div class="trust-item">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+            <path d="M7.5 1.5l1.59 3.22 3.56.52-2.57 2.5.6 3.54L7.5 9.5l-3.18 1.78.6-3.54-2.57-2.5 3.56-.52z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+          </svg>
+          4 Vienna clients
+        </div>
+        <div class="trust-divider" aria-hidden="true"></div>
+        <div class="trust-item">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+            <circle cx="7.5" cy="7.5" r="5.5" stroke="currentColor" stroke-width="1.3"/>
+            <path d="M7.5 4.5v3l2 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+          1–2 week delivery
+        </div>
+        <div class="trust-divider" aria-hidden="true"></div>
+        <div class="trust-item">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+            <path d="M7.5 2C5 2 2.5 4 2.5 7c0 2.76 1.5 4.5 5 5.5 3.5-1 5-2.74 5-5.5C12.5 4 10 2 7.5 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+          </svg>
+          Based in Vienna
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="section" aria-labelledby="srv-hed">
+      <div class="services-top">
+        <div class="section-badge reveal">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          Services
+        </div>
+        <h2 class="section-hed reveal d1" id="srv-hed">Everything you need to get online.</h2>
+        <p class="section-sub reveal d2">A complete website in 1–2 weeks. No templates. No complexity. No ongoing fees unless you want them.</p>
+      </div>
+
+      <div class="services-grid">
+        <div class="service-card reveal">
+          <div class="srv-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <rect x="2" y="3" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M6 17h8M10 15v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="srv-title">Custom Web Design</h3>
+          <p class="srv-desc">Built for your business, not a template. Every site is designed from scratch around your brand and customers.</p>
+        </div>
+
+        <div class="service-card reveal d1">
+          <div class="srv-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M10 2.5c0 0-3.5 3.5-3.5 7.5s3.5 7.5 3.5 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M2.5 10h15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M3.5 6.5h13M3.5 13.5h13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="srv-title">Domain &amp; Hosting</h3>
+          <p class="srv-desc">We handle the technical setup end-to-end — domain registration, hosting, SSL certificate, and DNS.</p>
+        </div>
+
+        <div class="service-card reveal d2">
+          <div class="srv-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <rect x="5.5" y="2" width="9" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="10" cy="15" r="1" fill="currentColor"/>
+            </svg>
+          </div>
+          <h3 class="srv-title">Mobile-First Development</h3>
+          <p class="srv-desc">Most of your customers find you on their phone. Every site we build looks perfect on any screen size.</p>
+        </div>
+
+        <div class="service-card reveal d1">
+          <div class="srv-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="10" cy="9" r="3" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M10 2a7 7 0 0 1 7 7c0 4-7 9-7 9S3 13 3 9a7 7 0 0 1 7-7z" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <h3 class="srv-title">Google Search Visibility</h3>
+          <p class="srv-desc">Basic SEO so your business shows up when people in Vienna search for what you offer.</p>
+        </div>
+
+        <div class="service-card reveal d2">
+          <div class="srv-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M3 10h14M3 6h14M3 14h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="srv-title">Content Writing</h3>
+          <p class="srv-desc">Need help with copy? We write clear, natural text for your pages — no filler, no buzzwords.</p>
+        </div>
+
+        <div class="service-card reveal d3">
+          <div class="srv-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M4 4l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M11 14h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="srv-title">Ongoing Updates</h3>
+          <p class="srv-desc">Menu changed? New hours? We stay reachable after launch for updates, at a simple monthly rate.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTFOLIO -->
+    <section id="portfolio" class="section" aria-labelledby="port-hed">
+      <div style="max-width:640px; margin-bottom:3.5rem;">
+        <div class="section-badge reveal">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <rect x="1" y="1" width="4.5" height="4.5" rx="1" stroke="currentColor" stroke-width="1.3"/>
+            <rect x="6.5" y="1" width="4.5" height="4.5" rx="1" stroke="currentColor" stroke-width="1.3"/>
+            <rect x="1" y="6.5" width="4.5" height="4.5" rx="1" stroke="currentColor" stroke-width="1.3"/>
+            <rect x="6.5" y="6.5" width="4.5" height="4.5" rx="1" stroke="currentColor" stroke-width="1.3"/>
+          </svg>
+          Selected Work
+        </div>
+        <h2 class="section-hed reveal d1" id="port-hed">Vienna businesses, online.</h2>
+        <p class="section-sub reveal d2">A sample of what we've built for restaurants and local businesses across the city.</p>
+      </div>
+
+      <div class="port-grid">
+        <article class="port-card reveal">
+          <div class="port-thumb">
+            <div class="port-thumb-inner" role="img" aria-label="Green Door Bistro website preview"></div>
+            <div class="port-label">Restaurant · Wien 1070</div>
+          </div>
+          <div class="port-body">
+            <h3 class="port-name">Green Door Bistro</h3>
+            <p class="port-meta">Custom design &nbsp;·&nbsp; Live in 6 days</p>
+          </div>
+        </article>
+
+        <article class="port-card reveal d1">
+          <div class="port-thumb">
+            <div class="port-thumb-inner" role="img" aria-label="Mr. Noodle website preview"></div>
+            <div class="port-label">Asian Restaurant · Wien 1020</div>
+          </div>
+          <div class="port-body">
+            <h3 class="port-name">Mr. Noodle</h3>
+            <p class="port-meta">Full redesign &nbsp;·&nbsp; Menu integration</p>
+          </div>
+        </article>
+
+        <article class="port-card reveal d2">
+          <div class="port-thumb">
+            <div class="port-thumb-inner" role="img" aria-label="ASPIC Vienna website preview"></div>
+            <div class="port-label">Fine Dining · Wien 1010</div>
+          </div>
+          <div class="port-body">
+            <h3 class="port-name">ASPIC Vienna</h3>
+            <p class="port-meta">New launch &nbsp;·&nbsp; Reservation system</p>
+          </div>
+        </article>
+
+        <article class="port-card reveal d3">
+          <div class="port-thumb">
+            <div class="port-thumb-inner" role="img" aria-label="Stella Marina website preview"></div>
+            <div class="port-label">Seafood · Wien 1030</div>
+          </div>
+          <div class="port-body">
+            <h3 class="port-name">Stella Marina</h3>
+            <p class="port-meta">Brand + web &nbsp;·&nbsp; Bilingual (DE/EN)</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section" aria-labelledby="about-hed">
+      <div class="about-grid">
+        <div class="about-text">
+          <div class="section-badge reveal">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/>
+              <path d="M6 4v2.5l1.5 1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+            About
+          </div>
+          <h2 class="section-hed reveal d1" id="about-hed">One person.<br>One focus.</h2>
+          <div class="about-body reveal d2">
+            <p>I'm a Vienna-based designer. My clients are mostly <strong>restaurants, cafes, and shops</strong> — places with regulars and no website. I build sites quickly, keep the process simple, and stay reachable after launch.</p>
+            <p>I use AI in my workflow. It's why I can turn a project around in a week at a price that makes sense for a local business — without cutting corners on the design.</p>
+            <p>No agencies, no middlemen. You work with me directly. If something needs changing six months from now, you reach me directly.</p>
+          </div>
+        </div>
+
+        <div class="reveal d3">
+          <div class="about-stats-card">
+            <div class="stats-grid">
+              <div class="stat">
+                <div class="stat-num">1<span>–</span>2</div>
+                <div class="stat-label">Week turnaround</div>
+              </div>
+              <div class="stat">
+                <div class="stat-num">4</div>
+                <div class="stat-label">Vienna clients</div>
+              </div>
+              <div class="stat-divider"></div>
+              <div class="stat">
+                <div class="stat-num">100<span>%</span></div>
+                <div class="stat-label">Local businesses</div>
+              </div>
+              <div class="stat">
+                <div class="stat-num">0</div>
+                <div class="stat-label">Hidden fees</div>
+              </div>
+            </div>
+            <p class="about-quote">"Most of my clients have been running their business for years and just haven't gotten around to a website. That's exactly who I'm here for."</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section" aria-labelledby="contact-hed">
+      <div style="text-align:center; max-width:560px; margin:0 auto 3rem;">
+        <div class="section-badge reveal" style="display:inline-flex;">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path d="M1 3l5 3.5L11 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            <rect x="1" y="2" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+          </svg>
+          Contact
+        </div>
+        <h2 class="section-hed reveal d1" id="contact-hed">Let's talk about your website.</h2>
+        <p class="section-sub reveal d2" style="margin:0 auto;">Tell me a bit about your business. I'll get back to you within a day.</p>
+      </div>
+
+      <div class="contact-card reveal d2">
+        <div class="contact-left">
+          <div>
+            <h3 class="contact-hed">Ready when you are.</h3>
+            <p class="contact-sub">No lengthy briefing calls. Just tell me what you need and we'll take it from there.</p>
+          </div>
+          <div class="contact-meta">
+            <div class="contact-row">
+              <div class="contact-row-icon">
+                <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+                  <path d="M7.5 2C5 2 3 4 3 6.5c0 3.5 4.5 7 4.5 7S12 10 12 6.5C12 4 10 2 7.5 2z" stroke="currentColor" stroke-width="1.3"/>
+                  <circle cx="7.5" cy="6.5" r="1.5" stroke="currentColor" stroke-width="1.3"/>
+                </svg>
+              </div>
+              <span class="contact-row-text">Vienna, Austria</span>
+            </div>
+            <div class="contact-row">
+              <div class="contact-row-icon">
+                <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+                  <path d="M1.5 3.5l6 4 6-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                  <rect x="1" y="2.5" width="13" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+                </svg>
+              </div>
+              <span class="contact-row-text">alex@bruskin.studio</span>
+            </div>
+            <div class="contact-row">
+              <div class="contact-row-icon">
+                <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+                  <circle cx="7.5" cy="7.5" r="5.5" stroke="currentColor" stroke-width="1.3"/>
+                  <path d="M7.5 4v3.5l2 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <span class="contact-row-text">Reply within 24 hours</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-right">
+          <form id="contact-form" novalidate aria-label="Contact form">
+            <div class="form-row">
+              <div class="f-group">
+                <label for="f-name">Your name <span aria-hidden="true">*</span></label>
+                <input type="text" id="f-name" name="name" placeholder="Maria Müller" required autocomplete="name">
+              </div>
+              <div class="f-group">
+                <label for="f-biz">Business name</label>
+                <input type="text" id="f-biz" name="business" placeholder="Café Schönbrunn" autocomplete="organization">
+              </div>
+            </div>
+            <div class="f-group">
+              <label for="f-email">Email address <span aria-hidden="true">*</span></label>
+              <input type="email" id="f-email" name="email" placeholder="maria@example.at" required autocomplete="email">
+            </div>
+            <div class="f-group">
+              <label for="f-msg">Tell me about your project <span aria-hidden="true">*</span></label>
+              <textarea id="f-msg" name="message" rows="4"
+                placeholder="We're a small restaurant in the 7th district and we've been meaning to get a website for years..." required></textarea>
+            </div>
+            <button type="submit" class="btn-primary" id="submit-btn" style="width:100%;justify-content:center;">
+              Send message
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M2 8h12M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="f-status" id="f-status" role="status" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <span class="ft-brand">Bruskin Studio</span>
+      <span class="ft-loc">Vienna, Austria</span>
+      <span class="ft-copy">&copy; 2026 · All rights reserved</span>
+    </footer>
+
+  </div><!-- /wrap -->
 
   <script>
-    /* ── EmailJS ─────────────────────────────────────────────────── */
+    /* ── EmailJS ──────────────────────────────────────────────────── */
     // TODO: Replace with your actual EmailJS credentials
-    emailjs.init('YOUR_PUBLIC_KEY');  // ← replace YOUR_PUBLIC_KEY
+    emailjs.init('YOUR_PUBLIC_KEY');   // ← YOUR_PUBLIC_KEY
 
-    /* ── Custom cursor ───────────────────────────────────────────── */
-    const cursor = document.getElementById('cursor');
-    let mx = 0, my = 0, cx = 0, cy = 0;
-
-    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-
-    (function tick() {
-      cx += (mx - cx) * 0.11;
-      cy += (my - cy) * 0.11;
-      cursor.style.left = cx + 'px';
-      cursor.style.top  = cy + 'px';
-      requestAnimationFrame(tick);
-    })();
-
-    document.querySelectorAll('a,button,.port-card,.service-row').forEach(el => {
-      el.addEventListener('mouseenter', () => cursor.classList.add('grow'));
-      el.addEventListener('mouseleave', () => cursor.classList.remove('grow'));
-    });
-
-    /* ── Nav scroll ──────────────────────────────────────────────── */
+    /* ── Nav scroll ───────────────────────────────────────────────── */
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => {
-      nav.classList.toggle('stuck', window.scrollY > 60);
+      nav.classList.toggle('stuck', window.scrollY > 50);
     }, { passive: true });
 
-    /* ── Scroll reveal ───────────────────────────────────────────── */
+    /* ── Scroll reveal ────────────────────────────────────────────── */
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('in');
-          io.unobserve(e.target);
-        }
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-    /* ── Contact form ────────────────────────────────────────────── */
-    const form      = document.getElementById('contact-form');
-    const submitBtn = document.getElementById('submit-btn');
-    const status    = document.getElementById('f-status');
+    /* ── Contact form ─────────────────────────────────────────────── */
+    const form   = document.getElementById('contact-form');
+    const btn    = document.getElementById('submit-btn');
+    const status = document.getElementById('f-status');
 
     form.addEventListener('submit', async e => {
       e.preventDefault();
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Sending…';
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
       status.className = 'f-status';
 
       try {
         await emailjs.send(
-          'YOUR_SERVICE_ID',   // ← replace YOUR_SERVICE_ID
-          'YOUR_TEMPLATE_ID',  // ← replace YOUR_TEMPLATE_ID
+          'YOUR_SERVICE_ID',   // ← YOUR_SERVICE_ID
+          'YOUR_TEMPLATE_ID',  // ← YOUR_TEMPLATE_ID
           {
             name:     document.getElementById('f-name').value,
             business: document.getElementById('f-biz').value,
@@ -1149,15 +1175,15 @@
           }
         );
         status.className = 'f-status ok';
-        status.textContent = 'Message sent. I\'ll be in touch within a day.';
+        status.textContent = "Message sent. I'll be in touch within a day.";
         form.reset();
       } catch (err) {
         status.className = 'f-status err';
         status.textContent = 'Something went wrong — email me directly at alex@bruskin.studio';
         console.error(err);
       } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = 'Send message <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8h12M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        btn.disabled = false;
+        btn.innerHTML = 'Send message <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8h12M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
       }
     });
   </script>
