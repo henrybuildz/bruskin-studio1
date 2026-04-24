@@ -1264,7 +1264,7 @@
   <script>
     /* ── EmailJS ──────────────────────────────────────────────────── */
     // TODO: Replace with your actual EmailJS credentials
-    emailjs.init('YOUR_PUBLIC_KEY');   // ← YOUR_PUBLIC_KEY
+    emailjs.init('OqRKcXWXn-dQrX2gy');
 
     /* ── Mobile menu ─────────────────────────────────────────────── */
     const hamburger  = document.querySelector('.nav-hamburger');
@@ -1319,14 +1319,17 @@
       status.className = 'f-status';
 
       try {
+        const senderEmail = document.getElementById('f-email').value;
+        const senderName  = document.getElementById('f-name').value;
         await emailjs.send(
-          'YOUR_SERVICE_ID',   // ← YOUR_SERVICE_ID
-          'YOUR_TEMPLATE_ID',  // ← YOUR_TEMPLATE_ID
+          'service_mmb31o6',
+          'template_bsxgjs9',
           {
-            name:     document.getElementById('f-name').value,
-            business: document.getElementById('f-biz').value,
-            email:    document.getElementById('f-email').value,
-            message:  document.getElementById('f-msg').value,
+            from_name:  senderName,
+            from_email: senderEmail,
+            reply_to:   senderEmail,
+            business:   document.getElementById('f-biz').value,
+            message:    document.getElementById('f-msg').value,
           }
         );
         status.className = 'f-status ok';
